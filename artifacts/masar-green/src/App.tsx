@@ -4,7 +4,7 @@ import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { I18nProvider } from '@/lib/i18n';
+import { I18nProvider, useI18n } from '@/lib/i18n';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import { Shell } from '@/components/shell';
 import { CelebrationProvider } from '@/components/celebration';
@@ -17,6 +17,9 @@ import ProfilePage from '@/pages/profile';
 import TripsPage from '@/pages/trips';
 import CarbonPage from '@/pages/carbon';
 import ReportPage from '@/pages/report';
+import AdvertisePage from '@/pages/advertise';
+import NotificationsPage from '@/pages/notifications';
+import FeedbackPage from '@/pages/feedback';
 import { LoginPage, OnboardingPage, NotFoundPage } from '@/pages/auth-pages';
 
 const queryClient = new QueryClient({
@@ -27,6 +30,29 @@ function OnboardingGate() {
   const { needsOnboarding } = useAuth();
   const [loc, navigate] = useLocation();
   useEffect(() => { if (needsOnboarding && loc !== '/onboarding') navigate('/onboarding'); }, [needsOnboarding, loc, navigate]);
+  return null;
+}
+
+function PageMetadata() {
+  const [location] = useLocation();
+  const { t } = useI18n();
+  useEffect(() => {
+    const pages: Record<string, readonly [string, string]> = {
+      '/advertise': ['ad.title', 'ad.sub'],
+      '/notifications': ['al.title', 'al.sub'],
+      '/feedback': ['fb.title', 'fb.sub'],
+    };
+    const page = pages[location];
+    const title = page ? `${t(page[0])} · Masar Green` : 'Masar Green';
+    const description = page ? `${t(page[1])} ${t('footer')}` : t('footer');
+    document.title = title;
+    for (const [name, content] of [['description', description], ['og:title', title], ['og:description', description]]) {
+      const property = name.startsWith('og:') ? 'property' : 'name';
+      let meta = document.head.querySelector<HTMLMetaElement>(`meta[${property}="${name}"]`);
+      if (!meta) { meta = document.createElement('meta'); meta.setAttribute(property, name); document.head.appendChild(meta); }
+      meta.content = content;
+    }
+  }, [location, t]);
   return null;
 }
 
@@ -44,6 +70,9 @@ function Router() {
         <Route path="/carbon" component={CarbonPage} />
         <Route path="/employer">{() => <ReportPage kind="employer" />}</Route>
         <Route path="/city">{() => <ReportPage kind="city" />}</Route>
+        <Route path="/advertise" component={AdvertisePage} />
+        <Route path="/notifications" component={NotificationsPage} />
+        <Route path="/feedback" component={FeedbackPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/onboarding" component={OnboardingPage} />
         <Route component={NotFoundPage} />
@@ -66,6 +95,7 @@ function App() {
             <AuthProvider>
               <CelebrationProvider>
                 <OnboardingGate />
+                <PageMetadata />
                 <Shell><Router /></Shell>
               </CelebrationProvider>
             </AuthProvider>

@@ -5,6 +5,295 @@
  * Masar Green simulated mobility and carbon rewards API
  * OpenAPI spec version: 1.0.0
  */
+export type CampaignInputPlacement = typeof CampaignInputPlacement[keyof typeof CampaignInputPlacement];
+
+
+export const CampaignInputPlacement = {
+  dashboard: 'dashboard',
+  community: 'community',
+} as const;
+
+export interface CampaignInput {
+  /**
+     * @minLength 2
+     * @maxLength 100
+     */
+  advertiser: string;
+  /**
+     * @minLength 3
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minLength 10
+     * @maxLength 600
+     */
+  description: string;
+  /** @maxLength 500 */
+  destinationUrl: string;
+  /** @maxLength 500 */
+  imageUrl?: string;
+  placement: CampaignInputPlacement;
+  startsAt: string;
+  endsAt: string;
+  /**
+     * @minimum 0
+     * @maximum 1000000
+     */
+  budgetAed: number;
+}
+
+export type CampaignStatus = typeof CampaignStatus[keyof typeof CampaignStatus];
+
+
+export const CampaignStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  published: 'published',
+  paused: 'paused',
+  rejected: 'rejected',
+} as const;
+
+export type Campaign = CampaignInput & {
+  id: number;
+  status: CampaignStatus;
+  impressions: number;
+  clicks: number;
+  simulated: boolean;
+};
+
+export type CampaignModerationStatus = typeof CampaignModerationStatus[keyof typeof CampaignModerationStatus];
+
+
+export const CampaignModerationStatus = {
+  approved: 'approved',
+  published: 'published',
+  paused: 'paused',
+  rejected: 'rejected',
+} as const;
+
+export interface CampaignModeration {
+  status: CampaignModerationStatus;
+}
+
+export interface SponsoredPlacement {
+  id: number;
+  advertiser: string;
+  title: string;
+  description: string;
+  destinationUrl: string;
+  imageUrl?: string;
+  placement: string;
+  startsAt: string;
+  endsAt: string;
+  simulated: boolean;
+}
+
+export type EnquiryInputPlacement = typeof EnquiryInputPlacement[keyof typeof EnquiryInputPlacement];
+
+
+export const EnquiryInputPlacement = {
+  dashboard: 'dashboard',
+  community: 'community',
+} as const;
+
+export interface EnquiryInput {
+  /**
+     * @minLength 2
+     * @maxLength 100
+     */
+  company: string;
+  /**
+     * @minLength 2
+     * @maxLength 100
+     */
+  contactName: string;
+  /** @maxLength 200 */
+  email: string;
+  placement: EnquiryInputPlacement;
+  /**
+     * @minLength 10
+     * @maxLength 2000
+     */
+  message: string;
+}
+
+export type SponsorshipEnquiry = EnquiryInput & {
+  id: number;
+  createdAt: string;
+};
+
+export type PlacementEventInputKind = typeof PlacementEventInputKind[keyof typeof PlacementEventInputKind];
+
+
+export const PlacementEventInputKind = {
+  impression: 'impression',
+  click: 'click',
+} as const;
+
+export interface PlacementEventInput {
+  kind: PlacementEventInputKind;
+  /**
+     * @minLength 20
+     * @maxLength 80
+     */
+  sessionKey: string;
+}
+
+export type AlertInputSeverity = typeof AlertInputSeverity[keyof typeof AlertInputSeverity];
+
+
+export const AlertInputSeverity = {
+  info: 'info',
+  warning: 'warning',
+  critical: 'critical',
+} as const;
+
+export type AlertInputCategory = typeof AlertInputCategory[keyof typeof AlertInputCategory];
+
+
+export const AlertInputCategory = {
+  delay: 'delay',
+  closure: 'closure',
+  disruption: 'disruption',
+  general: 'general',
+} as const;
+
+export type AlertInputAudience = typeof AlertInputAudience[keyof typeof AlertInputAudience];
+
+
+export const AlertInputAudience = {
+  all: 'all',
+  line: 'line',
+  station: 'station',
+} as const;
+
+export type AlertInputStatus = typeof AlertInputStatus[keyof typeof AlertInputStatus];
+
+
+export const AlertInputStatus = {
+  draft: 'draft',
+  published: 'published',
+  resolved: 'resolved',
+} as const;
+
+export interface AlertInput {
+  /**
+     * @minLength 3
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minLength 10
+     * @maxLength 2000
+     */
+  body: string;
+  /**
+     * @minLength 3
+     * @maxLength 120
+     */
+  titleAr: string;
+  /**
+     * @minLength 10
+     * @maxLength 2000
+     */
+  bodyAr: string;
+  severity: AlertInputSeverity;
+  category: AlertInputCategory;
+  audience: AlertInputAudience;
+  /** @maxLength 120 */
+  service: string;
+  status: AlertInputStatus;
+  publishedAt: string;
+  expiresAt: string;
+}
+
+export type ServiceAlert = AlertInput & {
+  id: number;
+  read: boolean;
+  simulated: boolean;
+};
+
+export type FeedbackInputKind = typeof FeedbackInputKind[keyof typeof FeedbackInputKind];
+
+
+export const FeedbackInputKind = {
+  complaint: 'complaint',
+  suggestion: 'suggestion',
+} as const;
+
+export type FeedbackInputCategory = typeof FeedbackInputCategory[keyof typeof FeedbackInputCategory];
+
+
+export const FeedbackInputCategory = {
+  metro: 'metro',
+  bus: 'bus',
+  tram: 'tram',
+  water: 'water',
+  accessibility: 'accessibility',
+  cleanliness: 'cleanliness',
+  other: 'other',
+} as const;
+
+export interface FeedbackInput {
+  kind: FeedbackInputKind;
+  category: FeedbackInputCategory;
+  /** @maxLength 120 */
+  station: string;
+  /**
+     * @minLength 3
+     * @maxLength 120
+     */
+  subject: string;
+  /**
+     * @minLength 10
+     * @maxLength 4000
+     */
+  description: string;
+}
+
+export type FeedbackReviewStatus = typeof FeedbackReviewStatus[keyof typeof FeedbackReviewStatus];
+
+
+export const FeedbackReviewStatus = {
+  submitted: 'submitted',
+  in_review: 'in_review',
+  planned: 'planned',
+  resolved: 'resolved',
+  closed: 'closed',
+} as const;
+
+export interface FeedbackReview {
+  status: FeedbackReviewStatus;
+  /** @maxLength 2000 */
+  reply?: string;
+}
+
+export interface FeedbackReply {
+  id: number;
+  body: string;
+  createdAt: string;
+}
+
+export type FeedbackTicketStatus = typeof FeedbackTicketStatus[keyof typeof FeedbackTicketStatus];
+
+
+export const FeedbackTicketStatus = {
+  submitted: 'submitted',
+  in_review: 'in_review',
+  planned: 'planned',
+  resolved: 'resolved',
+  closed: 'closed',
+} as const;
+
+export type FeedbackTicket = FeedbackInput & {
+  id: number;
+  reference: string;
+  status: FeedbackTicketStatus;
+  createdAt: string;
+  replies: FeedbackReply[];
+};
+
 export interface HealthStatus {
   status: string;
 }
@@ -349,6 +638,9 @@ export interface PersonalData {
   user: User;
   trips: Trip[];
   wallet: Wallet;
+  feedback?: FeedbackTicket[];
+  sponsorshipEnquiries?: SponsorshipEnquiry[];
+  campaigns?: Campaign[];
 }
 
 export type GetReportParams = {

@@ -6,6 +6,7 @@ import { rateLimit } from "express-rate-limit";
 import { LoginBody, LoginResponse, GetMeResponse, UpdateProfileBody, UpdateProfileResponse } from "@workspace/api-zod";
 import { one, run, sql } from "./store";
 import { publicUser } from "./data";
+import { ensureFeedbackWorkspace } from "./feedback-workspace";
 
 const secret=process.env.SESSION_SECRET;
 if(!secret)throw new Error("SESSION_SECRET is required. Configure it in Replit Secrets.");
@@ -31,6 +32,7 @@ const loginLimiter=rateLimit({windowMs:15*60000,limit:25,standardHeaders:"draft-
 authRouter.get("/auth/me",(req,res)=>{
   const id=sessionId(req);
   const user=id?publicUser(id):null;
+  if(id)ensureFeedbackWorkspace(req,res);
   res.json(GetMeResponse.parse({user,needsOnboarding:user?!user.onboarded:false}));
 });
 authRouter.post("/auth/login",loginLimiter,async(req,res)=>{
@@ -67,6 +69,7 @@ authRouter.post("/auth/login",loginLimiter,async(req,res)=>{
   run("INSERT INTO sessions VALUES (?,?,?)",jti,card!.user_id,expires);
   const token=jwt.sign({},signingSecret,{algorithm:"HS256",subject:String(card!.user_id),jwtid:jti,issuer:"masar-green",expiresIn:"7d"});
   res.cookie(cookieName,token,{httpOnly:true,secure:true,sameSite:"lax",maxAge:7*86400000,path:"/"});
+  ensureFeedbackWorkspace(req,res);
   const user=publicUser(card!.user_id);
   res.json(LoginResponse.parse({user,needsOnboarding:!user.onboarded}));
 });

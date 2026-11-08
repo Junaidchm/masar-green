@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { apiText } from './api-text';
+import { engEn, engAr } from './engagement-i18n';
 
 export type Lang = 'en' | 'ar';
 
@@ -110,6 +111,7 @@ const en = {
   'mode.metro': 'Metro', 'mode.bus': 'Bus', 'mode.tram': 'Tram', 'mode.water': 'Water taxi', 'mode.taxi': 'Taxi', 'mode.bike': 'Bike / e-scooter',
   'mode.walk': 'Walk', 'mode.car': 'Car', 'mode.mixed': 'Multimodal',
   offline: 'You are offline. Showing the saved app shell; live data needs a connection.',
+  ...engEn,
 };
 
 type Key = keyof typeof en;
@@ -219,6 +221,7 @@ const ar: Partial<Record<Key, string>> = {
   'mode.metro': 'مترو', 'mode.bus': 'حافلة', 'mode.tram': 'ترام', 'mode.water': 'تاكسي مائي', 'mode.taxi': 'تاكسي', 'mode.bike': 'دراجة / سكوتر',
   'mode.walk': 'مشي', 'mode.car': 'سيارة', 'mode.mixed': 'متعدد الوسائط',
   offline: 'أنت غير متصل. تُعرض واجهة التطبيق المحفوظة؛ البيانات الحية تحتاج اتصالاً.',
+  ...engAr,
 };
 
 export type TKey = Key;

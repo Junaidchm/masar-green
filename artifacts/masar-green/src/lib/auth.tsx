@@ -56,8 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = useCallback(async (cardNumber: string, pin: string) => {
     try {
       const s = await loginRef.current({ data: { cardNumber, pin } });
+      // Private complaint/enquiry caches must never flash from a previous account.
+      await qc.cancelQueries({ predicate: (q) => q.queryKey[0] !== getGetMeQueryKey()[0] });
+      qc.removeQueries({ predicate: (q) => q.queryKey[0] !== getGetMeQueryKey()[0] });
       qc.setQueryData(getGetMeQueryKey(), s);
-      await qc.invalidateQueries({ predicate: (q) => q.queryKey[0] !== getGetMeQueryKey()[0] });
       setLoginOpen(false);
       toast({ title: `${t('login.welcome')}${s.user?.name ? ', ' + s.user.name : ''}` });
       if (s.needsOnboarding) navigate('/onboarding');

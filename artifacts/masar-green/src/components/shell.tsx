@@ -8,6 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { BrandMark, FlagStripe } from './common';
 import { LoginForm } from './login-form';
+import { AlertBell, MoreMenu } from './header-extras';
 
 function usePrefs() {
   const { lang, setLang, dark, setDark } = useI18n();
@@ -78,9 +79,11 @@ export function Shell({ children }: { children: ReactNode }) {
               </Link>
             ))}
           </nav>
-          <div className="ms-auto flex items-center gap-1">
+          <div className="ms-auto flex items-center gap-0.5 sm:gap-1">
+            <AlertBell />
+            <MoreMenu />
             <button onClick={toggleLang} className="inline-flex h-10 items-center gap-1.5 rounded-md px-2.5 text-sm font-semibold text-white/80 hover:bg-white/10" data-testid="button-lang" aria-label="Language">
-              <Languages className="h-4 w-4" /><span className="hidden sm:inline">{t('toggle.lang')}</span>
+              <Languages className="h-4 w-4" /><span className="hidden md:inline">{t('toggle.lang')}</span>
             </button>
             <button onClick={toggleDark} className="grid h-10 w-10 place-items-center rounded-md text-white/80 hover:bg-white/10" aria-label={t('toggle.theme')} data-testid="button-theme">
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -94,8 +97,8 @@ export function Shell({ children }: { children: ReactNode }) {
                 <button onClick={signOut} className="hidden h-10 w-10 place-items-center rounded-md text-white/70 hover:bg-white/10 md:grid" aria-label={t('signOut')} data-testid="button-logout-header"><LogOut className="h-4 w-4 rtl:rotate-180" /></button>
               </>
             ) : (
-              <button onClick={openLogin} className="ms-1 inline-flex h-10 items-center gap-2 rounded-md bg-[#C8102E] px-3.5 text-sm font-semibold text-white hover:brightness-110" data-testid="button-signin">
-                <LogIn className="h-4 w-4 rtl:rotate-180" />{t('signIn')}
+              <button onClick={openLogin} aria-label={t('signIn')} className="ms-1 inline-flex h-10 items-center gap-2 rounded-md bg-[#C8102E] px-3 text-sm font-semibold text-white hover:brightness-110" data-testid="button-signin">
+                <LogIn className="h-4 w-4 rtl:rotate-180" /><span className="hidden min-[400px]:inline">{t('signIn')}</span>
               </button>
             )}
           </div>
@@ -117,7 +120,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
       <footer className="border-t bg-card/60 pb-24 lg:pb-0">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground md:px-6">
-          <span data-testid="text-disclaimer">Concept prototype. Not affiliated with RTA, NOL or any government entity. Data is simulated.</span>
+          <span data-testid="text-disclaimer">{t('footer')}</span>
           <span className="flex gap-4">
             <Link href="/carbon" className="hover:text-foreground">{t('nav.carbon')}</Link>
             <Link href="/profile" className="hover:text-foreground">{t('profile.privacy')}</Link>

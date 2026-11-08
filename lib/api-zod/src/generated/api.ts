@@ -8,6 +8,575 @@
 import * as zod from 'zod';
 
 
+export const getCampaignsResponseOneAdvertiserMin = 2;
+export const getCampaignsResponseOneAdvertiserMax = 100;
+
+export const getCampaignsResponseOneTitleMin = 3;
+export const getCampaignsResponseOneTitleMax = 120;
+
+export const getCampaignsResponseOneDescriptionMin = 10;
+export const getCampaignsResponseOneDescriptionMax = 600;
+
+export const getCampaignsResponseOneDestinationUrlMax = 500;
+
+export const getCampaignsResponseOneImageUrlMax = 500;
+
+export const getCampaignsResponseOneBudgetAedMin = 0;
+export const getCampaignsResponseOneBudgetAedMax = 1000000;
+
+
+
+export const GetCampaignsResponseItem = zod.object({
+  "advertiser": zod.string().min(getCampaignsResponseOneAdvertiserMin).max(getCampaignsResponseOneAdvertiserMax),
+  "title": zod.string().min(getCampaignsResponseOneTitleMin).max(getCampaignsResponseOneTitleMax),
+  "description": zod.string().min(getCampaignsResponseOneDescriptionMin).max(getCampaignsResponseOneDescriptionMax),
+  "destinationUrl": zod.string().max(getCampaignsResponseOneDestinationUrlMax),
+  "imageUrl": zod.string().max(getCampaignsResponseOneImageUrlMax).optional(),
+  "placement": zod.enum(['dashboard', 'community']),
+  "startsAt": zod.string(),
+  "endsAt": zod.string(),
+  "budgetAed": zod.number().min(getCampaignsResponseOneBudgetAedMin).max(getCampaignsResponseOneBudgetAedMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.enum(['pending', 'approved', 'published', 'paused', 'rejected']),
+  "impressions": zod.number().int(),
+  "clicks": zod.number().int(),
+  "simulated": zod.boolean()
+}))
+export const GetCampaignsResponse = zod.array(GetCampaignsResponseItem)
+
+
+export const createCampaignBodyAdvertiserMin = 2;
+export const createCampaignBodyAdvertiserMax = 100;
+
+export const createCampaignBodyTitleMin = 3;
+export const createCampaignBodyTitleMax = 120;
+
+export const createCampaignBodyDescriptionMin = 10;
+export const createCampaignBodyDescriptionMax = 600;
+
+export const createCampaignBodyDestinationUrlMax = 500;
+
+export const createCampaignBodyImageUrlMax = 500;
+
+export const createCampaignBodyBudgetAedMin = 0;
+export const createCampaignBodyBudgetAedMax = 1000000;
+
+
+
+export const CreateCampaignBody = zod.object({
+  "advertiser": zod.string().min(createCampaignBodyAdvertiserMin).max(createCampaignBodyAdvertiserMax),
+  "title": zod.string().min(createCampaignBodyTitleMin).max(createCampaignBodyTitleMax),
+  "description": zod.string().min(createCampaignBodyDescriptionMin).max(createCampaignBodyDescriptionMax),
+  "destinationUrl": zod.string().max(createCampaignBodyDestinationUrlMax),
+  "imageUrl": zod.string().max(createCampaignBodyImageUrlMax).optional(),
+  "placement": zod.enum(['dashboard', 'community']),
+  "startsAt": zod.string(),
+  "endsAt": zod.string(),
+  "budgetAed": zod.number().min(createCampaignBodyBudgetAedMin).max(createCampaignBodyBudgetAedMax)
+})
+
+export const createCampaignResponseOneAdvertiserMin = 2;
+export const createCampaignResponseOneAdvertiserMax = 100;
+
+export const createCampaignResponseOneTitleMin = 3;
+export const createCampaignResponseOneTitleMax = 120;
+
+export const createCampaignResponseOneDescriptionMin = 10;
+export const createCampaignResponseOneDescriptionMax = 600;
+
+export const createCampaignResponseOneDestinationUrlMax = 500;
+
+export const createCampaignResponseOneImageUrlMax = 500;
+
+export const createCampaignResponseOneBudgetAedMin = 0;
+export const createCampaignResponseOneBudgetAedMax = 1000000;
+
+
+
+export const CreateCampaignResponse = zod.object({
+  "advertiser": zod.string().min(createCampaignResponseOneAdvertiserMin).max(createCampaignResponseOneAdvertiserMax),
+  "title": zod.string().min(createCampaignResponseOneTitleMin).max(createCampaignResponseOneTitleMax),
+  "description": zod.string().min(createCampaignResponseOneDescriptionMin).max(createCampaignResponseOneDescriptionMax),
+  "destinationUrl": zod.string().max(createCampaignResponseOneDestinationUrlMax),
+  "imageUrl": zod.string().max(createCampaignResponseOneImageUrlMax).optional(),
+  "placement": zod.enum(['dashboard', 'community']),
+  "startsAt": zod.string(),
+  "endsAt": zod.string(),
+  "budgetAed": zod.number().min(createCampaignResponseOneBudgetAedMin).max(createCampaignResponseOneBudgetAedMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.enum(['pending', 'approved', 'published', 'paused', 'rejected']),
+  "impressions": zod.number().int(),
+  "clicks": zod.number().int(),
+  "simulated": zod.boolean()
+}))
+
+
+
+
+
+export const ModerateCampaignParams = zod.object({
+  "id": zod.coerce.number().int().min(1)
+})
+
+export const ModerateCampaignBody = zod.object({
+  "status": zod.enum(['approved', 'published', 'paused', 'rejected'])
+})
+
+export const moderateCampaignResponseOneAdvertiserMin = 2;
+export const moderateCampaignResponseOneAdvertiserMax = 100;
+
+export const moderateCampaignResponseOneTitleMin = 3;
+export const moderateCampaignResponseOneTitleMax = 120;
+
+export const moderateCampaignResponseOneDescriptionMin = 10;
+export const moderateCampaignResponseOneDescriptionMax = 600;
+
+export const moderateCampaignResponseOneDestinationUrlMax = 500;
+
+export const moderateCampaignResponseOneImageUrlMax = 500;
+
+export const moderateCampaignResponseOneBudgetAedMin = 0;
+export const moderateCampaignResponseOneBudgetAedMax = 1000000;
+
+
+
+export const ModerateCampaignResponse = zod.object({
+  "advertiser": zod.string().min(moderateCampaignResponseOneAdvertiserMin).max(moderateCampaignResponseOneAdvertiserMax),
+  "title": zod.string().min(moderateCampaignResponseOneTitleMin).max(moderateCampaignResponseOneTitleMax),
+  "description": zod.string().min(moderateCampaignResponseOneDescriptionMin).max(moderateCampaignResponseOneDescriptionMax),
+  "destinationUrl": zod.string().max(moderateCampaignResponseOneDestinationUrlMax),
+  "imageUrl": zod.string().max(moderateCampaignResponseOneImageUrlMax).optional(),
+  "placement": zod.enum(['dashboard', 'community']),
+  "startsAt": zod.string(),
+  "endsAt": zod.string(),
+  "budgetAed": zod.number().min(moderateCampaignResponseOneBudgetAedMin).max(moderateCampaignResponseOneBudgetAedMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.enum(['pending', 'approved', 'published', 'paused', 'rejected']),
+  "impressions": zod.number().int(),
+  "clicks": zod.number().int(),
+  "simulated": zod.boolean()
+}))
+
+
+export const getSponsorshipEnquiriesResponseOneCompanyMin = 2;
+export const getSponsorshipEnquiriesResponseOneCompanyMax = 100;
+
+export const getSponsorshipEnquiriesResponseOneContactNameMin = 2;
+export const getSponsorshipEnquiriesResponseOneContactNameMax = 100;
+
+export const getSponsorshipEnquiriesResponseOneEmailMax = 200;
+
+export const getSponsorshipEnquiriesResponseOneMessageMin = 10;
+export const getSponsorshipEnquiriesResponseOneMessageMax = 2000;
+
+
+
+export const GetSponsorshipEnquiriesResponseItem = zod.object({
+  "company": zod.string().min(getSponsorshipEnquiriesResponseOneCompanyMin).max(getSponsorshipEnquiriesResponseOneCompanyMax),
+  "contactName": zod.string().min(getSponsorshipEnquiriesResponseOneContactNameMin).max(getSponsorshipEnquiriesResponseOneContactNameMax),
+  "email": zod.string().email().max(getSponsorshipEnquiriesResponseOneEmailMax),
+  "placement": zod.enum(['dashboard', 'community']),
+  "message": zod.string().min(getSponsorshipEnquiriesResponseOneMessageMin).max(getSponsorshipEnquiriesResponseOneMessageMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "createdAt": zod.string()
+}))
+export const GetSponsorshipEnquiriesResponse = zod.array(GetSponsorshipEnquiriesResponseItem)
+
+
+export const createSponsorshipEnquiryBodyCompanyMin = 2;
+export const createSponsorshipEnquiryBodyCompanyMax = 100;
+
+export const createSponsorshipEnquiryBodyContactNameMin = 2;
+export const createSponsorshipEnquiryBodyContactNameMax = 100;
+
+export const createSponsorshipEnquiryBodyEmailMax = 200;
+
+export const createSponsorshipEnquiryBodyMessageMin = 10;
+export const createSponsorshipEnquiryBodyMessageMax = 2000;
+
+
+
+export const CreateSponsorshipEnquiryBody = zod.object({
+  "company": zod.string().min(createSponsorshipEnquiryBodyCompanyMin).max(createSponsorshipEnquiryBodyCompanyMax),
+  "contactName": zod.string().min(createSponsorshipEnquiryBodyContactNameMin).max(createSponsorshipEnquiryBodyContactNameMax),
+  "email": zod.string().email().max(createSponsorshipEnquiryBodyEmailMax),
+  "placement": zod.enum(['dashboard', 'community']),
+  "message": zod.string().min(createSponsorshipEnquiryBodyMessageMin).max(createSponsorshipEnquiryBodyMessageMax)
+})
+
+export const createSponsorshipEnquiryResponseOneCompanyMin = 2;
+export const createSponsorshipEnquiryResponseOneCompanyMax = 100;
+
+export const createSponsorshipEnquiryResponseOneContactNameMin = 2;
+export const createSponsorshipEnquiryResponseOneContactNameMax = 100;
+
+export const createSponsorshipEnquiryResponseOneEmailMax = 200;
+
+export const createSponsorshipEnquiryResponseOneMessageMin = 10;
+export const createSponsorshipEnquiryResponseOneMessageMax = 2000;
+
+
+
+export const CreateSponsorshipEnquiryResponse = zod.object({
+  "company": zod.string().min(createSponsorshipEnquiryResponseOneCompanyMin).max(createSponsorshipEnquiryResponseOneCompanyMax),
+  "contactName": zod.string().min(createSponsorshipEnquiryResponseOneContactNameMin).max(createSponsorshipEnquiryResponseOneContactNameMax),
+  "email": zod.string().email().max(createSponsorshipEnquiryResponseOneEmailMax),
+  "placement": zod.enum(['dashboard', 'community']),
+  "message": zod.string().min(createSponsorshipEnquiryResponseOneMessageMin).max(createSponsorshipEnquiryResponseOneMessageMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "createdAt": zod.string()
+}))
+
+
+export const GetSponsoredPlacementsResponseItem = zod.object({
+  "id": zod.number().int(),
+  "advertiser": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "destinationUrl": zod.string(),
+  "imageUrl": zod.string().optional(),
+  "placement": zod.string(),
+  "startsAt": zod.string(),
+  "endsAt": zod.string(),
+  "simulated": zod.boolean()
+})
+export const GetSponsoredPlacementsResponse = zod.array(GetSponsoredPlacementsResponseItem)
+
+
+
+
+
+export const TrackPlacementEventParams = zod.object({
+  "id": zod.coerce.number().int().min(1)
+})
+
+export const trackPlacementEventBodySessionKeyMin = 20;
+export const trackPlacementEventBodySessionKeyMax = 80;
+
+
+
+export const TrackPlacementEventBody = zod.object({
+  "kind": zod.enum(['impression', 'click']),
+  "sessionKey": zod.string().min(trackPlacementEventBodySessionKeyMin).max(trackPlacementEventBodySessionKeyMax)
+})
+
+export const TrackPlacementEventResponse = zod.object({
+  "message": zod.string()
+})
+
+
+export const getServiceAlertsResponseOneTitleMin = 3;
+export const getServiceAlertsResponseOneTitleMax = 120;
+
+export const getServiceAlertsResponseOneBodyMin = 10;
+export const getServiceAlertsResponseOneBodyMax = 2000;
+
+export const getServiceAlertsResponseOneTitleArMin = 3;
+export const getServiceAlertsResponseOneTitleArMax = 120;
+
+export const getServiceAlertsResponseOneBodyArMin = 10;
+export const getServiceAlertsResponseOneBodyArMax = 2000;
+
+export const getServiceAlertsResponseOneServiceMax = 120;
+
+
+
+export const GetServiceAlertsResponseItem = zod.object({
+  "title": zod.string().min(getServiceAlertsResponseOneTitleMin).max(getServiceAlertsResponseOneTitleMax),
+  "body": zod.string().min(getServiceAlertsResponseOneBodyMin).max(getServiceAlertsResponseOneBodyMax),
+  "titleAr": zod.string().min(getServiceAlertsResponseOneTitleArMin).max(getServiceAlertsResponseOneTitleArMax),
+  "bodyAr": zod.string().min(getServiceAlertsResponseOneBodyArMin).max(getServiceAlertsResponseOneBodyArMax),
+  "severity": zod.enum(['info', 'warning', 'critical']),
+  "category": zod.enum(['delay', 'closure', 'disruption', 'general']),
+  "audience": zod.enum(['all', 'line', 'station']),
+  "service": zod.string().max(getServiceAlertsResponseOneServiceMax),
+  "status": zod.enum(['draft', 'published', 'resolved']),
+  "publishedAt": zod.string(),
+  "expiresAt": zod.string()
+}).and(zod.object({
+  "id": zod.number().int(),
+  "read": zod.boolean(),
+  "simulated": zod.boolean()
+}))
+export const GetServiceAlertsResponse = zod.array(GetServiceAlertsResponseItem)
+
+
+export const createServiceAlertBodyTitleMin = 3;
+export const createServiceAlertBodyTitleMax = 120;
+
+export const createServiceAlertBodyBodyMin = 10;
+export const createServiceAlertBodyBodyMax = 2000;
+
+export const createServiceAlertBodyTitleArMin = 3;
+export const createServiceAlertBodyTitleArMax = 120;
+
+export const createServiceAlertBodyBodyArMin = 10;
+export const createServiceAlertBodyBodyArMax = 2000;
+
+export const createServiceAlertBodyServiceMax = 120;
+
+
+
+export const CreateServiceAlertBody = zod.object({
+  "title": zod.string().min(createServiceAlertBodyTitleMin).max(createServiceAlertBodyTitleMax),
+  "body": zod.string().min(createServiceAlertBodyBodyMin).max(createServiceAlertBodyBodyMax),
+  "titleAr": zod.string().min(createServiceAlertBodyTitleArMin).max(createServiceAlertBodyTitleArMax),
+  "bodyAr": zod.string().min(createServiceAlertBodyBodyArMin).max(createServiceAlertBodyBodyArMax),
+  "severity": zod.enum(['info', 'warning', 'critical']),
+  "category": zod.enum(['delay', 'closure', 'disruption', 'general']),
+  "audience": zod.enum(['all', 'line', 'station']),
+  "service": zod.string().max(createServiceAlertBodyServiceMax),
+  "status": zod.enum(['draft', 'published', 'resolved']),
+  "publishedAt": zod.string(),
+  "expiresAt": zod.string()
+})
+
+export const createServiceAlertResponseOneTitleMin = 3;
+export const createServiceAlertResponseOneTitleMax = 120;
+
+export const createServiceAlertResponseOneBodyMin = 10;
+export const createServiceAlertResponseOneBodyMax = 2000;
+
+export const createServiceAlertResponseOneTitleArMin = 3;
+export const createServiceAlertResponseOneTitleArMax = 120;
+
+export const createServiceAlertResponseOneBodyArMin = 10;
+export const createServiceAlertResponseOneBodyArMax = 2000;
+
+export const createServiceAlertResponseOneServiceMax = 120;
+
+
+
+export const CreateServiceAlertResponse = zod.object({
+  "title": zod.string().min(createServiceAlertResponseOneTitleMin).max(createServiceAlertResponseOneTitleMax),
+  "body": zod.string().min(createServiceAlertResponseOneBodyMin).max(createServiceAlertResponseOneBodyMax),
+  "titleAr": zod.string().min(createServiceAlertResponseOneTitleArMin).max(createServiceAlertResponseOneTitleArMax),
+  "bodyAr": zod.string().min(createServiceAlertResponseOneBodyArMin).max(createServiceAlertResponseOneBodyArMax),
+  "severity": zod.enum(['info', 'warning', 'critical']),
+  "category": zod.enum(['delay', 'closure', 'disruption', 'general']),
+  "audience": zod.enum(['all', 'line', 'station']),
+  "service": zod.string().max(createServiceAlertResponseOneServiceMax),
+  "status": zod.enum(['draft', 'published', 'resolved']),
+  "publishedAt": zod.string(),
+  "expiresAt": zod.string()
+}).and(zod.object({
+  "id": zod.number().int(),
+  "read": zod.boolean(),
+  "simulated": zod.boolean()
+}))
+
+
+
+
+
+export const UpdateServiceAlertParams = zod.object({
+  "id": zod.coerce.number().int().min(1)
+})
+
+export const updateServiceAlertBodyTitleMin = 3;
+export const updateServiceAlertBodyTitleMax = 120;
+
+export const updateServiceAlertBodyBodyMin = 10;
+export const updateServiceAlertBodyBodyMax = 2000;
+
+export const updateServiceAlertBodyTitleArMin = 3;
+export const updateServiceAlertBodyTitleArMax = 120;
+
+export const updateServiceAlertBodyBodyArMin = 10;
+export const updateServiceAlertBodyBodyArMax = 2000;
+
+export const updateServiceAlertBodyServiceMax = 120;
+
+
+
+export const UpdateServiceAlertBody = zod.object({
+  "title": zod.string().min(updateServiceAlertBodyTitleMin).max(updateServiceAlertBodyTitleMax),
+  "body": zod.string().min(updateServiceAlertBodyBodyMin).max(updateServiceAlertBodyBodyMax),
+  "titleAr": zod.string().min(updateServiceAlertBodyTitleArMin).max(updateServiceAlertBodyTitleArMax),
+  "bodyAr": zod.string().min(updateServiceAlertBodyBodyArMin).max(updateServiceAlertBodyBodyArMax),
+  "severity": zod.enum(['info', 'warning', 'critical']),
+  "category": zod.enum(['delay', 'closure', 'disruption', 'general']),
+  "audience": zod.enum(['all', 'line', 'station']),
+  "service": zod.string().max(updateServiceAlertBodyServiceMax),
+  "status": zod.enum(['draft', 'published', 'resolved']),
+  "publishedAt": zod.string(),
+  "expiresAt": zod.string()
+})
+
+export const updateServiceAlertResponseOneTitleMin = 3;
+export const updateServiceAlertResponseOneTitleMax = 120;
+
+export const updateServiceAlertResponseOneBodyMin = 10;
+export const updateServiceAlertResponseOneBodyMax = 2000;
+
+export const updateServiceAlertResponseOneTitleArMin = 3;
+export const updateServiceAlertResponseOneTitleArMax = 120;
+
+export const updateServiceAlertResponseOneBodyArMin = 10;
+export const updateServiceAlertResponseOneBodyArMax = 2000;
+
+export const updateServiceAlertResponseOneServiceMax = 120;
+
+
+
+export const UpdateServiceAlertResponse = zod.object({
+  "title": zod.string().min(updateServiceAlertResponseOneTitleMin).max(updateServiceAlertResponseOneTitleMax),
+  "body": zod.string().min(updateServiceAlertResponseOneBodyMin).max(updateServiceAlertResponseOneBodyMax),
+  "titleAr": zod.string().min(updateServiceAlertResponseOneTitleArMin).max(updateServiceAlertResponseOneTitleArMax),
+  "bodyAr": zod.string().min(updateServiceAlertResponseOneBodyArMin).max(updateServiceAlertResponseOneBodyArMax),
+  "severity": zod.enum(['info', 'warning', 'critical']),
+  "category": zod.enum(['delay', 'closure', 'disruption', 'general']),
+  "audience": zod.enum(['all', 'line', 'station']),
+  "service": zod.string().max(updateServiceAlertResponseOneServiceMax),
+  "status": zod.enum(['draft', 'published', 'resolved']),
+  "publishedAt": zod.string(),
+  "expiresAt": zod.string()
+}).and(zod.object({
+  "id": zod.number().int(),
+  "read": zod.boolean(),
+  "simulated": zod.boolean()
+}))
+
+
+
+
+
+export const MarkServiceAlertReadParams = zod.object({
+  "id": zod.coerce.number().int().min(1)
+})
+
+export const MarkServiceAlertReadResponse = zod.object({
+  "message": zod.string()
+})
+
+
+export const getFeedbackResponseOneStationMax = 120;
+
+export const getFeedbackResponseOneSubjectMin = 3;
+export const getFeedbackResponseOneSubjectMax = 120;
+
+export const getFeedbackResponseOneDescriptionMin = 10;
+export const getFeedbackResponseOneDescriptionMax = 4000;
+
+
+
+export const GetFeedbackResponseItem = zod.object({
+  "kind": zod.enum(['complaint', 'suggestion']),
+  "category": zod.enum(['metro', 'bus', 'tram', 'water', 'accessibility', 'cleanliness', 'other']),
+  "station": zod.string().max(getFeedbackResponseOneStationMax),
+  "subject": zod.string().min(getFeedbackResponseOneSubjectMin).max(getFeedbackResponseOneSubjectMax),
+  "description": zod.string().min(getFeedbackResponseOneDescriptionMin).max(getFeedbackResponseOneDescriptionMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "reference": zod.string(),
+  "status": zod.enum(['submitted', 'in_review', 'planned', 'resolved', 'closed']),
+  "createdAt": zod.string(),
+  "replies": zod.array(zod.object({
+  "id": zod.number().int(),
+  "body": zod.string(),
+  "createdAt": zod.string()
+}))
+}))
+export const GetFeedbackResponse = zod.array(GetFeedbackResponseItem)
+
+
+export const createFeedbackBodyStationMax = 120;
+
+export const createFeedbackBodySubjectMin = 3;
+export const createFeedbackBodySubjectMax = 120;
+
+export const createFeedbackBodyDescriptionMin = 10;
+export const createFeedbackBodyDescriptionMax = 4000;
+
+
+
+export const CreateFeedbackBody = zod.object({
+  "kind": zod.enum(['complaint', 'suggestion']),
+  "category": zod.enum(['metro', 'bus', 'tram', 'water', 'accessibility', 'cleanliness', 'other']),
+  "station": zod.string().max(createFeedbackBodyStationMax),
+  "subject": zod.string().min(createFeedbackBodySubjectMin).max(createFeedbackBodySubjectMax),
+  "description": zod.string().min(createFeedbackBodyDescriptionMin).max(createFeedbackBodyDescriptionMax)
+})
+
+export const createFeedbackResponseOneStationMax = 120;
+
+export const createFeedbackResponseOneSubjectMin = 3;
+export const createFeedbackResponseOneSubjectMax = 120;
+
+export const createFeedbackResponseOneDescriptionMin = 10;
+export const createFeedbackResponseOneDescriptionMax = 4000;
+
+
+
+export const CreateFeedbackResponse = zod.object({
+  "kind": zod.enum(['complaint', 'suggestion']),
+  "category": zod.enum(['metro', 'bus', 'tram', 'water', 'accessibility', 'cleanliness', 'other']),
+  "station": zod.string().max(createFeedbackResponseOneStationMax),
+  "subject": zod.string().min(createFeedbackResponseOneSubjectMin).max(createFeedbackResponseOneSubjectMax),
+  "description": zod.string().min(createFeedbackResponseOneDescriptionMin).max(createFeedbackResponseOneDescriptionMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "reference": zod.string(),
+  "status": zod.enum(['submitted', 'in_review', 'planned', 'resolved', 'closed']),
+  "createdAt": zod.string(),
+  "replies": zod.array(zod.object({
+  "id": zod.number().int(),
+  "body": zod.string(),
+  "createdAt": zod.string()
+}))
+}))
+
+
+
+
+
+export const ReviewFeedbackParams = zod.object({
+  "id": zod.coerce.number().int().min(1)
+})
+
+export const reviewFeedbackBodyReplyMax = 2000;
+
+
+
+export const ReviewFeedbackBody = zod.object({
+  "status": zod.enum(['submitted', 'in_review', 'planned', 'resolved', 'closed']),
+  "reply": zod.string().max(reviewFeedbackBodyReplyMax).optional()
+})
+
+export const reviewFeedbackResponseOneStationMax = 120;
+
+export const reviewFeedbackResponseOneSubjectMin = 3;
+export const reviewFeedbackResponseOneSubjectMax = 120;
+
+export const reviewFeedbackResponseOneDescriptionMin = 10;
+export const reviewFeedbackResponseOneDescriptionMax = 4000;
+
+
+
+export const ReviewFeedbackResponse = zod.object({
+  "kind": zod.enum(['complaint', 'suggestion']),
+  "category": zod.enum(['metro', 'bus', 'tram', 'water', 'accessibility', 'cleanliness', 'other']),
+  "station": zod.string().max(reviewFeedbackResponseOneStationMax),
+  "subject": zod.string().min(reviewFeedbackResponseOneSubjectMin).max(reviewFeedbackResponseOneSubjectMax),
+  "description": zod.string().min(reviewFeedbackResponseOneDescriptionMin).max(reviewFeedbackResponseOneDescriptionMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "reference": zod.string(),
+  "status": zod.enum(['submitted', 'in_review', 'planned', 'resolved', 'closed']),
+  "createdAt": zod.string(),
+  "replies": zod.array(zod.object({
+  "id": zod.number().int(),
+  "body": zod.string(),
+  "createdAt": zod.string()
+}))
+}))
+
+
 export const HealthCheckResponse = zod.object({
   "status": zod.string()
 })
@@ -522,6 +1091,43 @@ export const GetReportResponse = zod.object({
 })
 
 
+export const exportMyDataResponseFeedbackItemOneStationMax = 120;
+
+export const exportMyDataResponseFeedbackItemOneSubjectMin = 3;
+export const exportMyDataResponseFeedbackItemOneSubjectMax = 120;
+
+export const exportMyDataResponseFeedbackItemOneDescriptionMin = 10;
+export const exportMyDataResponseFeedbackItemOneDescriptionMax = 4000;
+
+export const exportMyDataResponseSponsorshipEnquiriesItemOneCompanyMin = 2;
+export const exportMyDataResponseSponsorshipEnquiriesItemOneCompanyMax = 100;
+
+export const exportMyDataResponseSponsorshipEnquiriesItemOneContactNameMin = 2;
+export const exportMyDataResponseSponsorshipEnquiriesItemOneContactNameMax = 100;
+
+export const exportMyDataResponseSponsorshipEnquiriesItemOneEmailMax = 200;
+
+export const exportMyDataResponseSponsorshipEnquiriesItemOneMessageMin = 10;
+export const exportMyDataResponseSponsorshipEnquiriesItemOneMessageMax = 2000;
+
+export const exportMyDataResponseCampaignsItemOneAdvertiserMin = 2;
+export const exportMyDataResponseCampaignsItemOneAdvertiserMax = 100;
+
+export const exportMyDataResponseCampaignsItemOneTitleMin = 3;
+export const exportMyDataResponseCampaignsItemOneTitleMax = 120;
+
+export const exportMyDataResponseCampaignsItemOneDescriptionMin = 10;
+export const exportMyDataResponseCampaignsItemOneDescriptionMax = 600;
+
+export const exportMyDataResponseCampaignsItemOneDestinationUrlMax = 500;
+
+export const exportMyDataResponseCampaignsItemOneImageUrlMax = 500;
+
+export const exportMyDataResponseCampaignsItemOneBudgetAedMin = 0;
+export const exportMyDataResponseCampaignsItemOneBudgetAedMax = 1000000;
+
+
+
 export const ExportMyDataResponse = zod.object({
   "user": zod.object({
   "id": zod.number().int(),
@@ -593,7 +1199,51 @@ export const ExportMyDataResponse = zod.object({
   "partner": zod.string(),
   "status": zod.string()
 }))
-})
+}),
+  "feedback": zod.array(zod.object({
+  "kind": zod.enum(['complaint', 'suggestion']),
+  "category": zod.enum(['metro', 'bus', 'tram', 'water', 'accessibility', 'cleanliness', 'other']),
+  "station": zod.string().max(exportMyDataResponseFeedbackItemOneStationMax),
+  "subject": zod.string().min(exportMyDataResponseFeedbackItemOneSubjectMin).max(exportMyDataResponseFeedbackItemOneSubjectMax),
+  "description": zod.string().min(exportMyDataResponseFeedbackItemOneDescriptionMin).max(exportMyDataResponseFeedbackItemOneDescriptionMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "reference": zod.string(),
+  "status": zod.enum(['submitted', 'in_review', 'planned', 'resolved', 'closed']),
+  "createdAt": zod.string(),
+  "replies": zod.array(zod.object({
+  "id": zod.number().int(),
+  "body": zod.string(),
+  "createdAt": zod.string()
+}))
+}))).optional(),
+  "sponsorshipEnquiries": zod.array(zod.object({
+  "company": zod.string().min(exportMyDataResponseSponsorshipEnquiriesItemOneCompanyMin).max(exportMyDataResponseSponsorshipEnquiriesItemOneCompanyMax),
+  "contactName": zod.string().min(exportMyDataResponseSponsorshipEnquiriesItemOneContactNameMin).max(exportMyDataResponseSponsorshipEnquiriesItemOneContactNameMax),
+  "email": zod.string().email().max(exportMyDataResponseSponsorshipEnquiriesItemOneEmailMax),
+  "placement": zod.enum(['dashboard', 'community']),
+  "message": zod.string().min(exportMyDataResponseSponsorshipEnquiriesItemOneMessageMin).max(exportMyDataResponseSponsorshipEnquiriesItemOneMessageMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "createdAt": zod.string()
+}))).optional(),
+  "campaigns": zod.array(zod.object({
+  "advertiser": zod.string().min(exportMyDataResponseCampaignsItemOneAdvertiserMin).max(exportMyDataResponseCampaignsItemOneAdvertiserMax),
+  "title": zod.string().min(exportMyDataResponseCampaignsItemOneTitleMin).max(exportMyDataResponseCampaignsItemOneTitleMax),
+  "description": zod.string().min(exportMyDataResponseCampaignsItemOneDescriptionMin).max(exportMyDataResponseCampaignsItemOneDescriptionMax),
+  "destinationUrl": zod.string().max(exportMyDataResponseCampaignsItemOneDestinationUrlMax),
+  "imageUrl": zod.string().max(exportMyDataResponseCampaignsItemOneImageUrlMax).optional(),
+  "placement": zod.enum(['dashboard', 'community']),
+  "startsAt": zod.string(),
+  "endsAt": zod.string(),
+  "budgetAed": zod.number().min(exportMyDataResponseCampaignsItemOneBudgetAedMin).max(exportMyDataResponseCampaignsItemOneBudgetAedMax)
+}).and(zod.object({
+  "id": zod.number().int(),
+  "status": zod.enum(['pending', 'approved', 'published', 'paused', 'rejected']),
+  "impressions": zod.number().int(),
+  "clicks": zod.number().int(),
+  "simulated": zod.boolean()
+}))).optional()
 })
 
 

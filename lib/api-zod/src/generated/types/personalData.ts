@@ -5,6 +5,9 @@
  * Masar Green simulated mobility and carbon rewards API
  * OpenAPI spec version: 1.0.0
  */
+import type { Campaign } from './campaign';
+import type { FeedbackTicket } from './feedbackTicket';
+import type { SponsorshipEnquiry } from './sponsorshipEnquiry';
 import type { Trip } from './trip';
 import type { User } from './user';
 import type { Wallet } from './wallet';
@@ -13,4 +16,7 @@ export interface PersonalData {
   user: User;
   trips: Trip[];
   wallet: Wallet;
+  feedback?: FeedbackTicket[];
+  sponsorshipEnquiries?: SponsorshipEnquiry[];
+  campaigns?: Campaign[];
 }

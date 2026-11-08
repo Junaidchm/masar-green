@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { campaign, ticket } from "./engagement-store";
+import { feedbackWorkspace } from "./feedback-workspace";
 import { randomUUID } from "node:crypto";
 import {
   GetWalletResponse, RedeemCreditsBody, RedeemCreditsResponse,
@@ -57,8 +59,14 @@ rewardsRouter.post("/challenges/:id/claim",authRequired,(req,res)=>{
   res.json({message:`${challenge.bonus} bonus Green Credits added to your wallet.`});
 });
 rewardsRouter.get("/leaderboard",(req,res)=>res.json(GetLeaderboardResponse.parse(community(readUser(req)))));
-rewardsRouter.get("/privacy/export",authRequired,(_req,res)=>{
+rewardsRouter.get("/privacy/export",authRequired,feedbackWorkspace,(_req,res)=>{
   const id=res.locals.userId;
   res.setHeader("Content-Disposition",'attachment; filename="masar-green-my-data.json"');
-  res.json(ExportMyDataResponse.parse({user:publicUser(id),trips:tripList(id),wallet:wallet(id)}));
+  res.json(ExportMyDataResponse.parse({
+    user:publicUser(id),trips:tripList(id),wallet:wallet(id),
+    feedback:all("SELECT * FROM feedback_tickets WHERE user_id=? AND workspace_hash=? ORDER BY id",id,res.locals.feedbackWorkspace).map(ticket),
+    sponsorshipEnquiries:all("SELECT * FROM sponsorship_enquiries WHERE owner_id=? AND workspace_hash=? ORDER BY id",id,res.locals.feedbackWorkspace)
+      .map(r=>({...JSON.parse(r.data),id:r.id,createdAt:r.created_at})),
+    campaigns:all("SELECT * FROM campaigns WHERE owner_id=? ORDER BY id",id).map(campaign),
+  }));
 });

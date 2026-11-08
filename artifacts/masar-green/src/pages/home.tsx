@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth';
 import { ActiveTripCard } from '@/components/active-trip';
 import { EmptyState, ErrorState, SectionTitle, Sk } from '@/components/common';
 import { TripRow } from './trips';
+import { SponsoredSlot } from '@/components/sponsored';
 
 function greetingKey() {
   const h = Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Dubai', hour: 'numeric', hour12: false }).format(new Date()));
@@ -120,6 +121,7 @@ export default function HomePage() {
             </ResponsiveContainer>
           </div>
         </section>
+        <div className="lg:col-span-3"><SponsoredSlot placement="dashboard" /></div>
         <section className="card-soft p-5 lg:col-span-3">
           <SectionTitle action={<Link href="/trips" className="text-sm font-semibold text-primary" data-testid="link-all-trips">{t('home.viewAll')}</Link>}>{t('home.recent')}</SectionTitle>
           {d.recentTrips.length === 0 ? (

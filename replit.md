@@ -11,6 +11,7 @@ Bilingual Dubai smart-mobility and carbon-rewards concept prototype.
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required app env: `SESSION_SECRET`; managed services provide `PORT` and `BASE_PATH`.
 - App data uses SQLite, explicitly requested by the user. Do not migrate it to PostgreSQL without asking.
+- Public demo card/PINs are not private staff authentication. Free-text feedback must remain browser-workspace isolated (including review and export). Do not enable a global demo review queue; real staff-wide access requires private staff authentication.
 
 ## Stack
 

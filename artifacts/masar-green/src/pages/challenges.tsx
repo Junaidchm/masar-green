@@ -1,3 +1,4 @@
+import { SponsoredSlot } from '@/components/sponsored';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Award, Check, Loader2, Lock, Trophy } from 'lucide-react';
@@ -33,6 +34,7 @@ export default function ChallengesPage() {
   return (
     <div>
       <PageHeader title={t('ch.title')} />
+      <div className="mb-6"><SponsoredSlot placement="community" /></div>
       <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
         <section>
           <SectionTitle>{t('ch.weekly')}</SectionTitle>

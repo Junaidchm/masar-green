@@ -146,6 +146,47 @@ not a second dev server on another port.
 
 ## Replacing simulated data with real services
 
+### Sponsorships, service alerts and feedback
+
+- **Advertising:** open `/advertise`. Any signed-in demo user can record an
+  enquiry. Employer accounts submit and see only their own campaigns; city
+  accounts approve, publish, pause or reject campaigns and review enquiries.
+  Published campaigns appear only within their scheduled dates, on the dashboard
+  or community page according to placement. Optional images and destinations
+  require HTTPS. External images may contact their host; links use no referrer.
+- **Measurement:** impressions and clicks are indicative aggregates, deduplicated
+  per anonymous tab viewing session. Only a hash of the random viewing token is
+  stored, never a NOL identifier or trip history. Public event ingestion is rate
+  limited but is not fraud-resistant billing evidence. Budgets are hypothetical;
+  no payment, revenue collection, invoice or external enquiry email is sent.
+- **Notifications:** `/notifications` is an in-app inbox for signed-in users.
+  City accounts create bilingual notices, schedule publication/expiry and resolve
+  them. Affected line or station is explicit and filterable; notices are not
+  automatically delivered based on inferred commuter routes. Read receipts are
+  personal and reset when a notice is revised. No SMS, email or push is sent.
+- **Feedback:** `/feedback` accepts commuter complaints and suggestions and
+  assigns a reference. **Public demo logins are not staff identities.** Cases are
+  isolated by an unguessable, Secure/HttpOnly browser-workspace cookie lasting
+  seven days, in addition to commuter ownership. Switch between commuter and
+  city demos in the **same browser** to demonstrate submission, review and
+  replies. A different visitor using the published city or commuter credentials
+  cannot read, update or export this browser's cases. Clearing cookies or using
+  another browser does not restore access using the public card/PIN alone.
+  Unscoped legacy cases are quarantined. Employers cannot access commuter cases.
+  This is a simulated review queue, not an official RTA complaint channel or a
+  real staff-wide service desk; real cross-browser staff review requires private
+  staff authentication before launch. Never enter real personal details.
+  Sponsorship enquiries and their contact details use the same browser-workspace
+  isolation for both listing and personal exports. Use fictional contacts.
+- All new records persist in the existing local SQLite database. Seeded examples
+  are clearly simulated and inserted once. Do not enter real card numbers,
+  sensitive personal details or actual emergencies in this prototype.
+- Run `node scripts/test-engagement.mjs` with the managed API workflow running
+  and `REPLIT_DEV_DOMAIN` available to smoke-test the new API flows. The script
+  uses seeded demo accounts, creates labelled fixtures and removes its own data.
+
+### Production integration work
+
 1. Obtain appropriate permissions and usage terms for RTA open data/GTFS.
    Replace seeded station/route tables with scheduled GTFS stops, trips,
    calendars, stop_times and transfers. Route with an actual multimodal graph

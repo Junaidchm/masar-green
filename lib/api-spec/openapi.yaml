@@ -6,6 +6,173 @@ info:
 servers:
   - url: /api
 paths:
+  /campaigns:
+    get:
+      operationId: getCampaigns
+      responses:
+        "200":
+          description: Owner campaigns or city moderation queue
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Campaign" } }
+    post:
+      operationId: createCampaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CampaignInput" }
+      responses:
+        "201":
+          description: Submitted for approval
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Campaign" }
+  /campaigns/{id}/status:
+    patch:
+      operationId: moderateCampaign
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer, minimum: 1 } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CampaignModeration" }
+      responses:
+        "200":
+          description: Moderated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Campaign" }
+  /sponsorship-enquiries:
+    get:
+      operationId: getSponsorshipEnquiries
+      responses:
+        "200":
+          description: Own enquiries or city queue
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/SponsorshipEnquiry" } }
+    post:
+      operationId: createSponsorshipEnquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EnquiryInput" }
+      responses:
+        "201":
+          description: Enquiry recorded
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SponsorshipEnquiry" }
+  /sponsored-placements:
+    get:
+      operationId: getSponsoredPlacements
+      responses:
+        "200":
+          description: Active public placements, no owner information
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/SponsoredPlacement" } }
+  /sponsored-placements/{id}/events:
+    post:
+      operationId: trackPlacementEvent
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer, minimum: 1 } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PlacementEventInput" }
+      responses:
+        "200":
+          description: Indicative aggregate counted once per viewing session
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Message" }
+  /service-alerts:
+    get:
+      operationId: getServiceAlerts
+      responses:
+        "200":
+          description: Signed-in active notices or complete city queue
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/ServiceAlert" } }
+    post:
+      operationId: createServiceAlert
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AlertInput" }
+      responses:
+        "201":
+          description: Alert created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ServiceAlert" }
+  /service-alerts/{id}:
+    patch:
+      operationId: updateServiceAlert
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer, minimum: 1 } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AlertInput" }
+      responses:
+        "200":
+          description: Alert updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ServiceAlert" }
+  /service-alerts/{id}/read:
+    post:
+      operationId: markServiceAlertRead
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer, minimum: 1 } }]
+      responses:
+        "200":
+          description: Read receipt saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Message" }
+  /feedback:
+    get:
+      operationId: getFeedback
+      responses:
+        "200":
+          description: Private submissions or city review queue
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/FeedbackTicket" } }
+    post:
+      operationId: createFeedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FeedbackInput" }
+      responses:
+        "201":
+          description: Submission with reference
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedbackTicket" }
+  /feedback/{id}/review:
+    patch:
+      operationId: reviewFeedback
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer, minimum: 1 } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FeedbackReview" }
+      responses:
+        "200":
+          description: Status and optional staff reply saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedbackTicket" }
   /healthz:
     get:
       operationId: healthCheck
@@ -234,6 +401,129 @@ paths:
               schema: { $ref: "#/components/schemas/PersonalData" }
 components:
   schemas:
+    CampaignInput:
+      type: object
+      required: [advertiser, title, description, destinationUrl, placement, startsAt, endsAt, budgetAed]
+      properties:
+        advertiser: { type: string, minLength: 2, maxLength: 100 }
+        title: { type: string, minLength: 3, maxLength: 120 }
+        description: { type: string, minLength: 10, maxLength: 600 }
+        destinationUrl: { type: string, maxLength: 500 }
+        imageUrl: { type: string, maxLength: 500 }
+        placement: { type: string, enum: [dashboard, community] }
+        startsAt: { type: string }
+        endsAt: { type: string }
+        budgetAed: { type: number, minimum: 0, maximum: 1000000 }
+    Campaign:
+      allOf:
+        - { $ref: "#/components/schemas/CampaignInput" }
+        - type: object
+          required: [id, status, impressions, clicks, simulated]
+          properties:
+            id: { type: integer }
+            status: { type: string, enum: [pending, approved, published, paused, rejected] }
+            impressions: { type: integer }
+            clicks: { type: integer }
+            simulated: { type: boolean }
+    CampaignModeration:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [approved, published, paused, rejected] }
+    SponsoredPlacement:
+      type: object
+      required: [id, advertiser, title, description, destinationUrl, placement, startsAt, endsAt, simulated]
+      properties:
+        id: { type: integer }
+        advertiser: { type: string }
+        title: { type: string }
+        description: { type: string }
+        destinationUrl: { type: string }
+        imageUrl: { type: string }
+        placement: { type: string }
+        startsAt: { type: string }
+        endsAt: { type: string }
+        simulated: { type: boolean }
+    EnquiryInput:
+      type: object
+      required: [company, contactName, email, placement, message]
+      properties:
+        company: { type: string, minLength: 2, maxLength: 100 }
+        contactName: { type: string, minLength: 2, maxLength: 100 }
+        email: { type: string, format: email, maxLength: 200 }
+        placement: { type: string, enum: [dashboard, community] }
+        message: { type: string, minLength: 10, maxLength: 2000 }
+    SponsorshipEnquiry:
+      allOf:
+        - { $ref: "#/components/schemas/EnquiryInput" }
+        - type: object
+          required: [id, createdAt]
+          properties:
+            id: { type: integer }
+            createdAt: { type: string }
+    PlacementEventInput:
+      type: object
+      required: [kind, sessionKey]
+      properties:
+        kind: { type: string, enum: [impression, click] }
+        sessionKey: { type: string, minLength: 20, maxLength: 80 }
+    AlertInput:
+      type: object
+      required: [title, body, titleAr, bodyAr, severity, category, audience, service, status, publishedAt, expiresAt]
+      properties:
+        title: { type: string, minLength: 3, maxLength: 120 }
+        body: { type: string, minLength: 10, maxLength: 2000 }
+        titleAr: { type: string, minLength: 3, maxLength: 120 }
+        bodyAr: { type: string, minLength: 10, maxLength: 2000 }
+        severity: { type: string, enum: [info, warning, critical] }
+        category: { type: string, enum: [delay, closure, disruption, general] }
+        audience: { type: string, enum: [all, line, station] }
+        service: { type: string, maxLength: 120 }
+        status: { type: string, enum: [draft, published, resolved] }
+        publishedAt: { type: string }
+        expiresAt: { type: string }
+    ServiceAlert:
+      allOf:
+        - { $ref: "#/components/schemas/AlertInput" }
+        - type: object
+          required: [id, read, simulated]
+          properties:
+            id: { type: integer }
+            read: { type: boolean }
+            simulated: { type: boolean }
+    FeedbackInput:
+      type: object
+      required: [kind, category, station, subject, description]
+      properties:
+        kind: { type: string, enum: [complaint, suggestion] }
+        category: { type: string, enum: [metro, bus, tram, water, accessibility, cleanliness, other] }
+        station: { type: string, maxLength: 120 }
+        subject: { type: string, minLength: 3, maxLength: 120 }
+        description: { type: string, minLength: 10, maxLength: 4000 }
+    FeedbackReview:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [submitted, in_review, planned, resolved, closed] }
+        reply: { type: string, maxLength: 2000 }
+    FeedbackReply:
+      type: object
+      required: [id, body, createdAt]
+      properties:
+        id: { type: integer }
+        body: { type: string }
+        createdAt: { type: string }
+    FeedbackTicket:
+      allOf:
+        - { $ref: "#/components/schemas/FeedbackInput" }
+        - type: object
+          required: [id, reference, status, createdAt, replies]
+          properties:
+            id: { type: integer }
+            reference: { type: string }
+            status: { type: string, enum: [submitted, in_review, planned, resolved, closed] }
+            createdAt: { type: string }
+            replies: { type: array, items: { $ref: "#/components/schemas/FeedbackReply" } }
     HealthStatus:
       type: object
       required: [status]
@@ -558,3 +848,6 @@ components:
         user: { $ref: "#/components/schemas/User" }
         trips: { type: array, items: { $ref: "#/components/schemas/Trip" } }
         wallet: { $ref: "#/components/schemas/Wallet" }
+        feedback: { type: array, items: { $ref: "#/components/schemas/FeedbackTicket" } }
+        sponsorshipEnquiries: { type: array, items: { $ref: "#/components/schemas/SponsorshipEnquiry" } }
+        campaigns: { type: array, items: { $ref: "#/components/schemas/Campaign" } }
