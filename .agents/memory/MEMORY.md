@@ -1,2 +1,3 @@
 - [Vite peer variants](vite-peer-variants.md) — dedupe pnpm's optional-peer variants before working around incompatible plugin types.
 - [Engagement goals](product-engagement.md) — sponsorship revenue opportunities, service notifications and commuter complaints are user-requested product goals.
+- [UI/UX delivery scope](ui-ux-delivery.md) — requests to improve Masar Green mean updating the working app, not stopping at canvas-only previews.

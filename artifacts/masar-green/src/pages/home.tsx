@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell } from 'recharts';
-import { Route as RouteIcon, Map, Wallet, Trophy, TreePine, Flame, Medal, Leaf, ArrowRight, CreditCard } from 'lucide-react';
+import { Route as RouteIcon, Map, Wallet, Trophy, TreePine, Flame, Medal, Leaf, ArrowRight, CreditCard, Bell, HeartHandshake, Sparkles } from 'lucide-react';
 import { useGetDashboard, getGetDashboardQueryKey } from '@workspace/api-client-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth } from '@/lib/auth';
@@ -40,27 +40,37 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 md:space-y-6">
       {d.activeTrip && <ActiveTripCard trip={d.activeTrip} />}
+
+      <section className="home-welcome rise">
+        <div className="home-eyebrow mb-3">{t('ui.today')}</div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1>{t(greetingKey())}, <span data-testid="text-username">{d.user.name}</span>.</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{t('ui.subtitle')}</p>
+          </div>
+          {isGuest && <span className="rounded-full border bg-card px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{t('guest.short')}</span>}
+        </div>
+      </section>
+
+      <nav className="home-support" aria-label={t('ui.support')}>
+        <Link href="/notifications" data-testid="link-home-notifications"><Bell className="h-4 w-4" />{t('nav.notifications')}</Link>
+        <Link href="/feedback" data-testid="link-home-feedback"><HeartHandshake className="h-4 w-4" />{t('nav.feedback')}</Link>
+        <Link href="/assistant" data-testid="link-home-assistant"><Sparkles className="h-4 w-4" />{t('as.title')}</Link>
+      </nav>
 
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Hero impact */}
-        <section className="grain rise relative overflow-hidden rounded-2xl bg-[#111111] p-6 text-[#F5F6F7] md:p-8 lg:col-span-2" data-testid="card-hero">
-          <div className="absolute inset-y-0 start-0 w-1.5 bg-[#C8102E]" />
-          <svg className="pointer-events-none absolute -bottom-6 end-0 h-56 w-[70%] opacity-90 rtl:-scale-x-100" viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden>
-            <path d="M0 190 C 120 190, 140 110, 220 110 S 330 30, 400 20" stroke="#00732F" strokeWidth="18" fill="none" strokeLinecap="round" />
-            <path d="M0 190 C 120 190, 140 110, 220 110 S 330 30, 400 20" stroke="#F5F6F7" strokeOpacity=".35" strokeWidth="1.5" fill="none" strokeDasharray="3 10" />
-            <circle cx="220" cy="110" r="9" fill="#F5F6F7" /><circle cx="400" cy="20" r="11" fill="#B8964B" />
-          </svg>
-          <div className="relative">
-            <div className="flex flex-wrap items-center gap-2 text-sm text-white/70">
-              <span>{t(greetingKey())}, <b className="text-white" data-testid="text-username">{d.user.name}</b></span>
-              {isGuest && <span className="rounded-full border border-[#B8964B]/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#d9bd7f]">{t('guest.short')}</span>}
+        <section className="home-impact rise relative overflow-hidden lg:col-span-2" data-testid="card-hero">
+          <div className="relative z-10">
+            <div className="flex items-center justify-between gap-3">
+              <span className="rounded-full border border-white/20 px-3 py-2 text-[10px] font-bold uppercase tracking-[.12em] text-white/80">{t('home.month')}</span>
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/10 text-[#d6ed74]"><Leaf className="h-5 w-5" /></span>
             </div>
-            <div className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-white/60">{t('home.month')}</div>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="num text-6xl font-extrabold tracking-tight md:text-7xl" data-testid="text-month-saved">{num(d.monthSaved, 1)}</span>
-              <span className="text-xl font-semibold text-white/70">{t('kg')} CO₂</span>
+            <div className="mt-6 flex flex-wrap items-baseline gap-2">
+              <span className="home-number num" data-testid="text-month-saved">{num(d.monthSaved, 2)}</span>
+              <span className="text-lg font-semibold text-white/70">{t('kg')} CO₂</span>
             </div>
             <p className="mt-2 max-w-sm text-sm text-white/70">{t('home.heroLine')}</p>
             <div className="mt-6 flex flex-wrap gap-6 text-sm">
@@ -71,24 +81,24 @@ export default function HomePage() {
         </section>
 
         {/* Wallet */}
-        <Link href="/wallet" className="rise group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#B8964B]/50 bg-gradient-to-br from-[#f7f0df] to-[#efe3c3] p-6 text-[#111111] dark:from-[#2a2416] dark:to-[#1d190f] dark:text-[#F5F6F7]" data-testid="card-wallet">
+        <Link href="/wallet" className="home-wallet rise group relative flex flex-col justify-between overflow-hidden" data-testid="card-wallet">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#8a6d2f] dark:text-[#d9bd7f]">{t('home.wallet')}</span>
-            <CreditCard className="h-5 w-5 text-[#8a6d2f] dark:text-[#d9bd7f]" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em] opacity-70">{t('home.wallet')}</span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-black/5 dark:bg-white/5"><CreditCard className="h-4 w-4" /></span>
           </div>
           <div className="my-6">
-            <div className="num text-4xl font-extrabold" data-testid="text-wallet-aed">{aed(d.aed)}</div>
+            <div className="home-number num !text-[40px] md:!text-[44px]" data-testid="text-wallet-aed">{aed(d.aed)}</div>
             <div className="num mt-1 text-sm opacity-70">{num(d.credits)} {t('credits')}</div>
           </div>
           <span className="inline-flex items-center gap-1 text-sm font-semibold">{t('wallet.redeem')} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" /></span>
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="home-stats grid grid-cols-2 gap-3 md:grid-cols-4">
         {stats.map((s, i) => (
           <div key={i} className="card-soft rise p-4" style={{ animationDelay: `${i * 60}ms` }}>
-            <s.icon className="h-5 w-5" style={{ color: s.tone }} />
-            <div className="mt-3 text-xs text-muted-foreground">{s.label}</div>
+            <s.icon className="stat-icon h-[18px] w-[18px]" />
+            <div className="stat-label">{s.label}</div>
             <div className="num text-2xl font-extrabold">{s.value} <span className="text-sm font-medium text-muted-foreground">{s.unit}</span></div>
           </div>
         ))}
@@ -96,10 +106,10 @@ export default function HomePage() {
 
       <section>
         <SectionTitle>{t('home.quick')}</SectionTitle>
-        <div className="grid grid-cols-4 gap-2 md:gap-3">
+        <div className="home-quick grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
           {qa.map((a) => (
-            <Link key={a.href} href={a.href} className="flex flex-col items-center gap-2 rounded-xl p-2 text-center text-xs font-semibold transition-transform hover:-translate-y-0.5 md:flex-row md:bg-card md:p-3 md:text-start md:text-sm md:shadow-sm" data-testid={`link-qa-${a.href.slice(1)}`}>
-              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${a.c}`}><a.icon className="h-5 w-5" /></span>{a.label}
+            <Link key={a.href} href={a.href} className="flex items-center gap-2 p-3 text-start text-xs font-semibold transition-transform hover:-translate-y-0.5 md:text-sm" data-testid={`link-qa-${a.href.slice(1)}`}>
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><a.icon className="h-[18px] w-[18px]" /></span>{a.label}
             </Link>
           ))}
         </div>
@@ -131,6 +141,15 @@ export default function HomePage() {
           )}
         </section>
       </div>
+
+      <section className="home-ai">
+        <span className="home-ai-icon"><Sparkles className="h-6 w-6" /></span>
+        <div className="min-w-0 flex-1">
+          <h2 className="font-extrabold">{t('as.title')}</h2>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{t('ui.aiBody')}</p>
+        </div>
+        <Link href="/assistant" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground" data-testid="link-home-ask">{t('ui.aiAction')}<ArrowRight className="h-4 w-4 rtl:rotate-180" /></Link>
+      </section>
     </div>
   );
 }

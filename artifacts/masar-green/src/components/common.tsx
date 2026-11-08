@@ -35,7 +35,7 @@ export function SectionTitle({ children, action, kicker }: { children: ReactNode
 
 export function PageHeader({ title, sub, right }: { title: string; sub?: string; right?: ReactNode }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-4 rise">
+    <div className="page-heading flex flex-wrap items-end justify-between gap-4 rise">
       <div>
         <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">{title}</h1>
         {sub && <p className="mt-1 max-w-2xl text-sm text-muted-foreground md:text-base">{sub}</p>}
@@ -93,11 +93,9 @@ export function FlagStripe() {
 export function BrandMark({ className = 'h-8 w-8' }: { className?: string }) {
   return (
     <svg viewBox="0 0 512 512" className={className} aria-hidden>
-      <rect width="512" height="512" rx="112" fill="#111111" />
-      <rect width="96" height="512" fill="#C8102E" />
-      <path d="M168 380 C 220 380, 220 250, 300 250 S 380 132, 420 132" stroke="#00732F" strokeWidth="44" fill="none" strokeLinecap="round" />
-      <circle cx="168" cy="380" r="34" fill="#F5F6F7" />
-      <circle cx="420" cy="132" r="34" fill="#B8964B" />
+      <rect width="512" height="512" rx="150" fill="#1b6654" />
+      <path d="M138 328 C105 226 190 170 275 168 C330 166 356 133 366 109 C409 263 345 365 245 357 C198 354 175 341 167 326" stroke="#d6ed74" strokeWidth="29" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M142 401 C162 310 212 257 304 222 M197 300 L190 251 M227 269 L281 282" stroke="#d6ed74" strokeWidth="26" fill="none" strokeLinecap="round" />
     </svg>
   );
 }

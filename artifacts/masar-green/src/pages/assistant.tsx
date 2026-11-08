@@ -118,7 +118,7 @@ export default function AssistantPage() {
   return (
     <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1fr_300px]" data-testid="page-assistant">
       <section className="card-soft flex h-[calc(100dvh-18rem)] min-h-[460px] flex-col overflow-hidden lg:h-[calc(100dvh-10rem)] lg:min-h-[560px]">
-        <header className="relative shrink-0 overflow-hidden bg-[#111111] text-[#F5F6F7]">
+        <header className="chat-header relative shrink-0 overflow-hidden">
           <FlagStripe />
           <div className="flex items-center gap-3 px-4 py-3.5 md:px-5">
             <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#00732F]">

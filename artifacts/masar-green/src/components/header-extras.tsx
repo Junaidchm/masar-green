@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'wouter';
-import { Bell, Megaphone, MessageSquareWarning, MoreHorizontal, BellRing, ArrowRight, Sparkles } from 'lucide-react';
+import { Bell, Megaphone, MessageSquareWarning, MoreHorizontal, BellRing, ArrowRight, Sparkles, Trophy, History, Calculator, Building2, Landmark } from 'lucide-react';
 import { useGetServiceAlerts, getGetServiceAlertsQueryKey } from '@workspace/api-client-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth } from '@/lib/auth';
@@ -23,7 +23,7 @@ export function AlertBell() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="relative grid h-10 w-10 place-items-center rounded-md text-white/80 hover:bg-white/10" aria-label={`${t('al.bell')}${n ? `, ${n} ${t('al.unread')}` : ''}`} data-testid="button-bell">
+        <button className="relative grid h-11 w-11 place-items-center rounded-xl text-muted-foreground hover:bg-muted" aria-label={`${t('al.bell')}${n ? `, ${n} ${t('al.unread')}` : ''}`} data-testid="button-bell">
           <Bell className="h-4 w-4" />
           {n > 0 && <span className="absolute end-1 top-1 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[#C8102E] px-1 text-[10px] font-bold text-white ring-2 ring-[#111111] num" data-testid="text-unread-count">{n > 9 ? '9+' : n}</span>}
         </button>
@@ -53,24 +53,30 @@ export function AlertBell() {
 
 export function MoreMenu() {
   const { t } = useI18n();
+  const { user } = useAuth();
   const [loc, navigate] = useLocation();
   const items = [
     { href: '/assistant', label: t('nav.assistant'), icon: Sparkles },
     { href: '/notifications', label: t('nav.notifications'), icon: Bell },
     { href: '/feedback', label: t('nav.feedback'), icon: MessageSquareWarning },
     { href: '/advertise', label: t('nav.advertise'), icon: Megaphone },
+    { href: '/challenges', label: t('nav.challenges'), icon: Trophy },
+    { href: '/trips', label: t('nav.trips'), icon: History },
+    { href: '/carbon', label: t('nav.carbon'), icon: Calculator },
+    ...(user?.role === 'employer' ? [{ href: '/employer', label: t('nav.employer'), icon: Building2 }] : []),
+    ...(user?.role === 'city' ? [{ href: '/city', label: t('nav.city'), icon: Landmark }] : []),
   ];
   const on = items.some((i) => loc.startsWith(i.href));
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className={`grid h-10 w-10 place-items-center rounded-md hover:bg-white/10 ${on ? 'text-white' : 'text-white/80'}`} aria-label={t('nav.moreMenu')} data-testid="button-more">
+        <button className={`grid h-11 w-11 place-items-center rounded-xl hover:bg-muted ${on ? 'bg-primary/10 text-primary' : 'text-muted-foreground'}`} aria-label={t('nav.moreMenu')} data-testid="button-more">
           <MoreHorizontal className="h-5 w-5" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         {items.map((i) => (
-          <DropdownMenuItem key={i.href} onSelect={() => navigate(i.href)} className={`gap-2.5 py-2.5 ${loc.startsWith(i.href) ? 'font-bold text-primary' : ''}`} data-testid={`menu-${i.href.slice(1)}`}>
+            <DropdownMenuItem key={i.href} onSelect={() => navigate(i.href)} className={`min-h-11 gap-2.5 rounded-lg py-2.5 ${loc.startsWith(i.href) ? 'font-bold text-primary' : ''}`} data-testid={`menu-${i.href.slice(1)}`}>
             <i.icon className="h-4 w-4" />{i.label}
           </DropdownMenuItem>
         ))}
