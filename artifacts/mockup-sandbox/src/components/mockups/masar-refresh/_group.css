@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700;800&display=swap');
+
+/* Extracted Masar Green tokens. Isolated to this preview document. */
+:root {
+  --background: 210 11% 96%; --foreground: 0 0% 7%;
+  --border: 210 10% 88%; --card: 210 20% 99%;
+  --card-foreground: 0 0% 7%; --card-border: 210 10% 89%;
+  --sidebar: 210 20% 99%; --sidebar-foreground: 0 0% 7%; --sidebar-border: 210 10% 88%;
+  --sidebar-primary: 350 85% 42%; --sidebar-primary-foreground: 210 20% 99%;
+  --sidebar-accent: 145 40% 92%; --sidebar-accent-foreground: 145 100% 18%; --sidebar-ring: 350 85% 42%;
+  --popover: 210 20% 99%; --popover-foreground: 0 0% 7%; --popover-border: 210 10% 88%;
+  --primary: 350 85% 42%; --primary-foreground: 210 20% 99%;
+  --secondary: 210 10% 92%; --secondary-foreground: 0 0% 7%;
+  --muted: 210 10% 93%; --muted-foreground: 215 8% 38%;
+  --accent: 145 40% 92%; --accent-foreground: 145 100% 18%;
+  --destructive: 350 85% 42%; --destructive-foreground: 210 20% 99%;
+  --input: 210 10% 82%; --ring: 350 85% 42%;
+  --chart-1: 145 100% 23%; --chart-2: 350 85% 42%; --chart-3: 41 43% 51%; --chart-4: 0 0% 25%; --chart-5: 190 60% 35%;
+  --app-font-sans: 'Inter', 'Noto Kufi Arabic', system-ui, sans-serif;
+  --app-font-serif: Georgia, serif; --app-font-mono: Menlo, monospace; --radius: 0.75rem;
+  --uae-red: #C8102E; --uae-green: #00732F; --uae-black: #111111; --gold: #B8964B;
+}
+.dark {
+  --background: 220 8% 7%; --foreground: 210 15% 94%;
+  --border: 220 7% 18%; --card: 220 7% 10%; --card-foreground: 210 15% 94%; --card-border: 220 7% 17%;
+  --sidebar: 220 7% 10%; --sidebar-foreground: 210 15% 94%; --sidebar-border: 220 7% 18%;
+  --sidebar-primary: 350 85% 42%; --sidebar-primary-foreground: 210 20% 99%;
+  --sidebar-accent: 145 50% 14%; --sidebar-accent-foreground: 145 60% 70%; --sidebar-ring: 350 85% 42%;
+  --popover: 220 7% 11%; --popover-foreground: 210 15% 94%; --popover-border: 220 7% 20%;
+  --primary: 350 75% 50%; --primary-foreground: 210 20% 99%;
+  --secondary: 220 7% 15%; --secondary-foreground: 210 15% 94%;
+  --muted: 220 7% 14%; --muted-foreground: 215 8% 66%;
+  --accent: 145 50% 14%; --accent-foreground: 145 60% 72%;
+  --destructive: 350 75% 50%; --destructive-foreground: 210 20% 99%; --input: 220 7% 26%; --ring: 350 75% 55%;
+  --chart-1: 145 60% 45%; --chart-2: 350 85% 42%; --chart-3: 41 43% 51%; --chart-4: 0 0% 25%; --chart-5: 190 60% 35%;
+}
+.masar-current { font-family: 'Inter', 'Noto Kufi Arabic', sans-serif; font-feature-settings: 'cv11','ss01'; }
+.masar-current .num { font-variant-numeric: tabular-nums; }
+.masar-current .card-soft { background: hsl(var(--card)); border: 1px solid hsl(var(--card-border)); border-radius:12px; box-shadow:0 1px 2px hsl(220 20% 20%/.04),0 8px 24px -12px hsl(220 20% 20%/.12); }
+.masar-current .grain::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.07; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
