@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "59bQJoJzjxVoPB6ks9qVP"
+uri = "file://attached_assets/generated_images/masar-green-overview.gif"
+type = "image"
+title = "Masar Green overview GIF"
+description = "A looping 9-second bilingual overview of Masar Green: greener trip planning, simulated Green Credits, and the first-trip referral reward. 800 × 450 px; the demo disclaimer is included."
+logical_id = "07e0d3fd-4e3a-4f1d-b27a-45b4209540f3"
+content_hash = "sha256:cc971cc749f0569bbd4195b0767c86804bd7e9ba0695b2ad221a3ea1ad53fe7d"
+size = 781732
+mtime_ms = 1794144966270
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:28d02bf5-6beb-47e6-af20-80acdc93120e/07e0d3fd-4e3a-4f1d-b27a-45b4209540f3/cc8263b7-7659-4033-a79c-ac04cb32f0bf"
+storage_version_token = "1794145001208504"
+content_type = "image/gif"
