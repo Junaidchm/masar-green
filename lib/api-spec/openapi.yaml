@@ -1,36 +1,560 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
-  version: 0.1.0
-  description: API specification
+  version: 1.0.0
+  description: Masar Green simulated mobility and carbon rewards API
 servers:
   - url: /api
-    description: Base API path
-tags:
-  - name: health
-    description: Health operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
-      tags: [health]
-      summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/HealthStatus"
+              schema: { $ref: "#/components/schemas/HealthStatus" }
+  /auth/me:
+    get:
+      operationId: getMe
+      responses:
+        "200":
+          description: Session or null
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+  /auth/login:
+    post:
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CardLogin" }
+      responses:
+        "200":
+          description: Signed in
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+  /auth/logout:
+    post:
+      operationId: logout
+      responses:
+        "200":
+          description: Signed out
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Message" }
+  /profile:
+    patch:
+      operationId: updateProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ProfileInput" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+  /dashboard:
+    get:
+      operationId: getDashboard
+      responses:
+        "200":
+          description: Personal impact
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Dashboard" }
+  /locations:
+    get:
+      operationId: getLocations
+      responses:
+        "200":
+          description: Dubai locations
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Place" } }
+  /plan:
+    post:
+      operationId: planTrip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PlanInput" }
+      responses:
+        "200":
+          description: Multimodal routes
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/RouteOption" } }
+  /trips:
+    get:
+      operationId: getTrips
+      responses:
+        "200":
+          description: Trip history
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Trip" } }
+    delete:
+      operationId: deleteTrips
+      responses:
+        "200":
+          description: History deleted
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Message" }
+  /trips/start:
+    post:
+      operationId: startTrip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TripStartInput" }
+      responses:
+        "200":
+          description: Active trip
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Trip" }
+  /trips/{id}/end:
+    post:
+      operationId: endTrip
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TripEndInput" }
+      responses:
+        "200":
+          description: Completed with verification result
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Trip" }
+  /wallet:
+    get:
+      operationId: getWallet
+      responses:
+        "200":
+          description: Wallet and ledger
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Wallet" }
+  /wallet/redeem:
+    post:
+      operationId: redeemCredits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RedemptionInput" }
+      responses:
+        "200":
+          description: Voucher or coming soon confirmation
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Redemption" }
+  /map:
+    get:
+      operationId: getLiveMap
+      responses:
+        "200":
+          description: Simulated vehicle positions updated every five seconds
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LiveMap" }
+  /challenges:
+    get:
+      operationId: getChallenges
+      responses:
+        "200":
+          description: Weekly progress
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Challenge" } }
+  /challenges/{id}/claim:
+    post:
+      operationId: claimChallenge
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        "200":
+          description: Bonus credited
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Message" }
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      responses:
+        "200":
+          description: Community standings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Community" }
+  /carbon:
+    get:
+      operationId: getCarbonConfig
+      responses:
+        "200":
+          description: Transparent factors
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CarbonConfig" }
+  /reports:
+    get:
+      operationId: getReport
+      parameters:
+        - { name: kind, in: query, required: true, schema: { type: string, enum: [employer, city] } }
+        - { name: from, in: query, schema: { type: string } }
+        - { name: to, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: Anonymised aggregates
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Report" }
+  /privacy/export:
+    get:
+      operationId: exportMyData
+      responses:
+        "200":
+          description: Personal data download
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PersonalData" }
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
-        status:
-          type: string
-      required:
-        - status
-
+        status: { type: string }
+    Message:
+      type: object
+      required: [message]
+      properties:
+        message: { type: string }
+    CardLogin:
+      type: object
+      required: [cardNumber, pin]
+      properties:
+        cardNumber: { type: string, pattern: '^\d{8,10}$' }
+        pin: { type: string, pattern: '^\d{4}$' }
+    ProfileInput:
+      type: object
+      properties:
+        name: { type: string, minLength: 1, maxLength: 80 }
+        language: { type: string, enum: [en, ar] }
+        locationConsent: { type: boolean }
+        trackingConsent: { type: boolean }
+        notifications: { type: boolean }
+        darkMode: { type: boolean }
+        onboarded: { type: boolean }
+    User:
+      type: object
+      required: [id, name, role, cardNumber, cardBalance, language, locationConsent, trackingConsent, notifications, darkMode, onboarded]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        role: { type: string, enum: [commuter, employer, city] }
+        cardNumber: { type: string }
+        cardBalance: { type: number }
+        language: { type: string, enum: [en, ar] }
+        locationConsent: { type: boolean }
+        trackingConsent: { type: boolean }
+        notifications: { type: boolean }
+        darkMode: { type: boolean }
+        onboarded: { type: boolean }
+    Session:
+      type: object
+      required: [user, needsOnboarding]
+      properties:
+        user:
+          anyOf:
+            - { $ref: "#/components/schemas/User" }
+            - { type: "null" }
+        needsOnboarding: { type: boolean }
+    Place:
+      type: object
+      required: [id, name, nameAr, lat, lng, type, line]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        nameAr: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+        type: { type: string }
+        line: { type: string }
+    Leg:
+      type: object
+      required: [mode, line, from, to, minutes, distance, coordinates, instruction]
+      properties:
+        mode: { type: string }
+        line: { type: string }
+        from: { type: string }
+        to: { type: string }
+        minutes: { type: number }
+        distance: { type: number }
+        instruction: { type: string }
+        coordinates: { type: array, items: { type: array, items: { type: number } } }
+    PlanInput:
+      type: object
+      required: [fromId, toId]
+      properties:
+        fromId: { type: integer }
+        toId: { type: integer }
+        accessible: { type: boolean }
+        sort: { type: string, enum: [Greenest, Cheapest, Fastest, Least Crowded] }
+    RouteOption:
+      type: object
+      required: [id, fromId, toId, title, price, minutes, distance, co2, saved, credits, crowd, tags, walkingMinutes, transfers, accessible, legs]
+      properties:
+        id: { type: string }
+        fromId: { type: integer }
+        toId: { type: integer }
+        title: { type: string }
+        price: { type: number }
+        minutes: { type: number }
+        distance: { type: number }
+        co2: { type: number }
+        saved: { type: number }
+        credits: { type: integer }
+        crowd: { type: string }
+        tags: { type: array, items: { type: string } }
+        walkingMinutes: { type: integer }
+        transfers: { type: integer }
+        accessible: { type: boolean }
+        legs: { type: array, items: { $ref: "#/components/schemas/Leg" } }
+    TripStartInput:
+      type: object
+      required: [fromId, toId, routeId]
+      properties:
+        fromId: { type: integer }
+        toId: { type: integer }
+        routeId: { type: string }
+    TripEndInput:
+      type: object
+      required: [simulate]
+      properties:
+        simulate: { type: boolean }
+        tapOut: { type: boolean }
+        gpsDistance: { type: number, minimum: 0 }
+    Trip:
+      type: object
+      required: [id, from, to, mode, status, startedAt, distance, minutes, co2, saved, credits, verificationScore, price, legs]
+      properties:
+        id: { type: integer }
+        from: { type: string }
+        to: { type: string }
+        mode: { type: string }
+        status: { type: string }
+        startedAt: { type: string }
+        endedAt: { type: ["string", "null"] }
+        distance: { type: number }
+        minutes: { type: number }
+        co2: { type: number }
+        saved: { type: number }
+        credits: { type: integer }
+        verificationScore: { type: integer }
+        reason: { type: ["string", "null"] }
+        price: { type: number }
+        legs: { type: array, items: { $ref: "#/components/schemas/Leg" } }
+    DataPoint:
+      type: object
+      required: [name, value]
+      properties:
+        name: { type: string }
+        value: { type: number }
+    Dashboard:
+      type: object
+      required: [user, monthSaved, totalSaved, trees, streak, rank, tripCount, credits, aed, weekly, recentTrips, activeTrip]
+      properties:
+        user: { $ref: "#/components/schemas/User" }
+        monthSaved: { type: number }
+        totalSaved: { type: number }
+        trees: { type: number }
+        streak: { type: integer }
+        rank: { type: integer }
+        tripCount: { type: integer }
+        credits: { type: integer }
+        aed: { type: number }
+        weekly: { type: array, items: { $ref: "#/components/schemas/DataPoint" } }
+        recentTrips: { type: array, items: { $ref: "#/components/schemas/Trip" } }
+        activeTrip:
+          anyOf:
+            - { $ref: "#/components/schemas/Trip" }
+            - { type: "null" }
+    LedgerEntry:
+      type: object
+      required: [id, type, credits, description, createdAt]
+      properties:
+        id: { type: integer }
+        type: { type: string }
+        credits: { type: integer }
+        description: { type: string }
+        createdAt: { type: string }
+        expiresAt: { type: ["string", "null"] }
+    Partner:
+      type: object
+      required: [id, name, category, description, minimumAed]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        category: { type: string }
+        description: { type: string }
+        minimumAed: { type: number }
+    RedemptionInput:
+      type: object
+      required: [kind, amount]
+      properties:
+        kind: { type: string, enum: [nol, voucher, donation, bank] }
+        amount: { type: number, minimum: 1, maximum: 500 }
+        partnerId: { type: integer }
+    Redemption:
+      type: object
+      required: [id, kind, amount, credits, code, expiresAt, partner, status]
+      properties:
+        id: { type: integer }
+        kind: { type: string }
+        amount: { type: number }
+        credits: { type: integer }
+        code: { type: string }
+        expiresAt: { type: string }
+        partner: { type: string }
+        status: { type: string }
+    Wallet:
+      type: object
+      required: [credits, aed, totalEarned, expiringCredits, history, partners, redemptions]
+      properties:
+        credits: { type: integer }
+        aed: { type: number }
+        totalEarned: { type: integer }
+        expiringCredits: { type: integer }
+        history: { type: array, items: { $ref: "#/components/schemas/LedgerEntry" } }
+        partners: { type: array, items: { $ref: "#/components/schemas/Partner" } }
+        redemptions: { type: array, items: { $ref: "#/components/schemas/Redemption" } }
+    Vehicle:
+      type: object
+      required: [id, mode, line, lat, lng, crowd, eta, nextStop]
+      properties:
+        id: { type: integer }
+        mode: { type: string }
+        line: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+        crowd: { type: string }
+        eta: { type: integer }
+        nextStop: { type: string }
+    TransitLine:
+      type: object
+      required: [id, name, mode, color, coordinates]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        mode: { type: string }
+        color: { type: string }
+        coordinates: { type: array, items: { type: array, items: { type: number } } }
+    LiveMap:
+      type: object
+      required: [updatedAt, vehicles, stations, lines]
+      properties:
+        updatedAt: { type: string }
+        vehicles: { type: array, items: { $ref: "#/components/schemas/Vehicle" } }
+        stations: { type: array, items: { $ref: "#/components/schemas/Place" } }
+        lines: { type: array, items: { $ref: "#/components/schemas/TransitLine" } }
+    Challenge:
+      type: object
+      required: [id, title, titleAr, description, target, progress, bonus, endsAt, claimed, mode]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        titleAr: { type: string }
+        description: { type: string }
+        target: { type: integer }
+        progress: { type: integer }
+        bonus: { type: integer }
+        endsAt: { type: string }
+        claimed: { type: boolean }
+        mode: { type: string }
+    Leader:
+      type: object
+      required: [name, saved, rank, isYou]
+      properties:
+        name: { type: string }
+        saved: { type: number }
+        rank: { type: integer }
+        isYou: { type: boolean }
+    Badge:
+      type: object
+      required: [name, description, earned]
+      properties:
+        name: { type: string }
+        description: { type: string }
+        earned: { type: boolean }
+    Community:
+      type: object
+      required: [individual, workplace, neighbourhood, badges]
+      properties:
+        individual: { type: array, items: { $ref: "#/components/schemas/Leader" } }
+        workplace: { type: array, items: { $ref: "#/components/schemas/Leader" } }
+        neighbourhood: { type: array, items: { $ref: "#/components/schemas/Leader" } }
+        badges: { type: array, items: { $ref: "#/components/schemas/Badge" } }
+    CarbonFactor:
+      type: object
+      required: [mode, factor]
+      properties:
+        mode: { type: string }
+        factor: { type: number }
+    CarbonConfig:
+      type: object
+      required: [baseline, creditsPerKg, creditsPerAed, dailyCap, verificationThreshold, factors, explanation]
+      properties:
+        baseline: { type: number }
+        creditsPerKg: { type: number }
+        creditsPerAed: { type: number }
+        dailyCap: { type: integer }
+        verificationThreshold: { type: integer }
+        factors: { type: array, items: { $ref: "#/components/schemas/CarbonFactor" } }
+        explanation: { type: string }
+    HeatPoint:
+      type: object
+      required: [lat, lng, count, name]
+      properties:
+        lat: { type: number }
+        lng: { type: number }
+        count: { type: integer }
+        name: { type: string }
+    Report:
+      type: object
+      required: [kind, title, from, to, totalSaved, trips, participants, participation, carsRemoved, ridershipChange, groups, crowding, heatmap]
+      properties:
+        kind: { type: string }
+        title: { type: string }
+        from: { type: string }
+        to: { type: string }
+        totalSaved: { type: number }
+        trips: { type: integer }
+        participants: { type: integer }
+        participation: { type: number }
+        carsRemoved: { type: integer }
+        ridershipChange: { type: number }
+        groups: { type: array, items: { $ref: "#/components/schemas/DataPoint" } }
+        crowding: { type: array, items: { $ref: "#/components/schemas/DataPoint" } }
+        heatmap: { type: array, items: { $ref: "#/components/schemas/HeatPoint" } }
+    PersonalData:
+      type: object
+      required: [user, trips, wallet]
+      properties:
+        user: { $ref: "#/components/schemas/User" }
+        trips: { type: array, items: { $ref: "#/components/schemas/Trip" } }
+        wallet: { $ref: "#/components/schemas/Wallet" }

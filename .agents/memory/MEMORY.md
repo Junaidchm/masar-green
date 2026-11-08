@@ -1,0 +1,1 @@
+- [Vite peer variants](vite-peer-variants.md) — dedupe pnpm's optional-peer variants before working around incompatible plugin types.

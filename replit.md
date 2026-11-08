@@ -1,6 +1,6 @@
-# [Project name]
+# Masar Green
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Bilingual Dubai smart-mobility and carbon-rewards concept prototype.
 
 ## Run & Operate
 
@@ -9,36 +9,47 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required app env: `SESSION_SECRET`; managed services provide `PORT` and `BASE_PATH`.
+- App data uses SQLite, explicitly requested by the user. Do not migrate it to PostgreSQL without asking.
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
 - API: Express 5
-- DB: PostgreSQL + Drizzle ORM
+- App DB: better-sqlite3, auto-seeded local prototype data. Existing unused PostgreSQL library is left intact.
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- Client: `artifacts/masar-green/src`
+- Server/domain: `artifacts/api-server/src/masar`
+- API contract: `lib/api-spec/openapi.yaml`; regenerate after changes.
+- Full run instructions, demo accounts and limitations: `README.md`
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Preserve the provided workspace rather than duplicate client/server trees.
+- A clearly labelled guest preview uses seeded demo data; mutations require actual sign-in.
+- Local card/PIN auth is explicitly requested for a simulation only, not an official NOL login.
+- Ledger audit data and hashed abuse checks survive history deletion, with journey descriptions removed.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Simulated trip planning, live transit, carbon calculations, wallet rewards, challenges, community and role-protected anonymised reports.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- English/Arabic with RTL, UAE palette, mobile-first, light/dark.
+- Never use official RTA/NOL logos or imply government affiliation.
+- All transport, verification and money flows are simulations; bank withdrawal is coming soon.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Secure cookies require the proxied HTTPS origin. Do not log PINs or cookie values.
+- Do not cache authenticated API responses in the PWA.
+- SQLite is prototype-local; do not promise durable production money or card balances.
 
 ## Pointers
 

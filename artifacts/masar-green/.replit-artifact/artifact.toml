@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Masar Green"
+description = "A bilingual Dubai smart-mobility concept with multimodal trip planning, simulated transport tracking, carbon-saving rewards, a Green Wallet, and anonymised employer and city insights."
+version = "1.0.0"
+id = "artifacts/masar-green"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18846
+
+[services.development]
+run = "pnpm --filter @workspace/masar-green run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/masar-green", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/masar-green/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18846"
+BASE_PATH = "/"
