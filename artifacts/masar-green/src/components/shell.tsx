@@ -126,13 +126,13 @@ export function Shell({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden" aria-label={t('ui.navigation')}>
+      <nav className="app-tab-bar fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)] lg:hidden" aria-label={t('ui.navigation')}>
         <div className="grid grid-cols-5">
           {tabs.map((n) => {
             const on = active(n.href);
             return (
-              <Link key={n.href} href={n.href} aria-current={on ? 'page' : undefined} className={`relative flex min-h-[68px] flex-col items-center justify-center gap-1 text-[10px] font-semibold ${on ? 'text-primary' : 'text-muted-foreground'}`} data-testid={`tab-${n.href.slice(1) || 'home'}`}>
-                <span className={`grid h-7 w-11 place-items-center rounded-full ${on ? 'bg-primary/10' : ''}`}><n.icon className="h-[18px] w-[18px]" /></span>{n.label}
+              <Link key={n.href} href={n.href} aria-current={on ? 'page' : undefined} className="app-tab relative flex min-h-[68px] flex-col items-center justify-center gap-1 text-[10px] font-semibold" data-testid={`tab-${n.href.slice(1) || 'home'}`}>
+                <span className="app-tab-icon grid h-8 w-12 place-items-center rounded-xl"><n.icon className="h-[18px] w-[18px]" /></span>{n.label}
               </Link>
             );
           })}
@@ -141,8 +141,8 @@ export function Shell({ children }: { children: ReactNode }) {
 
       {!bare && loc !== '/assistant' && (
         <Link href="/assistant" aria-label={t('as.launcher')} data-testid="link-assistant-launcher"
-          className="group fixed end-4 z-40 inline-flex h-12 items-center gap-2 rounded-full bg-[#194e43] ps-1.5 pe-4 text-sm font-bold text-[#fffef9] shadow-lg ring-1 ring-white/10 transition-transform hover:-translate-y-0.5 active:scale-95 bottom-[calc(80px+env(safe-area-inset-bottom))] lg:bottom-6 lg:end-6">
-          <span className="relative grid h-9 w-9 place-items-center rounded-full bg-white/10 text-[#d6ed74]">
+          className="assistant-fab group fixed end-4 z-40 inline-flex h-12 items-center gap-2 rounded-full ps-1.5 pe-4 text-sm font-bold transition-transform hover:-translate-y-0.5 active:scale-95 bottom-[calc(80px+env(safe-area-inset-bottom))] lg:bottom-6 lg:end-6">
+          <span className="relative grid h-9 w-9 place-items-center rounded-full bg-[#194e43] text-[#d6ed74]">
             <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
           </span>
           <span>{t('as.launcherShort')}</span>

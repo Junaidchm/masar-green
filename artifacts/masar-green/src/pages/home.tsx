@@ -8,6 +8,7 @@ import { ActiveTripCard } from '@/components/active-trip';
 import { EmptyState, ErrorState, SectionTitle, Sk } from '@/components/common';
 import { TripRow } from './trips';
 import { SponsoredSlot } from '@/components/sponsored';
+import { SustainabilityQuote } from '@/components/sustainability-quote';
 
 function greetingKey() {
   const h = Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Dubai', hour: 'numeric', hour12: false }).format(new Date()));
@@ -33,10 +34,10 @@ export default function HomePage() {
     { icon: RouteIcon, label: t('home.trips'), value: num(d.tripCount), unit: '', tone: '#5B5F66' },
   ];
   const qa = [
-    { href: '/plan', icon: RouteIcon, label: t('qa.plan'), c: 'bg-primary text-primary-foreground' },
-    { href: '/map', icon: Map, label: t('qa.map'), c: 'bg-foreground text-background' },
-    { href: '/wallet', icon: Wallet, label: t('qa.wallet'), c: 'bg-[#B8964B] text-[#111111]' },
-    { href: '/challenges', icon: Trophy, label: t('qa.challenges'), c: 'bg-[#00732F] text-white' },
+    { href: '/plan', icon: RouteIcon, label: t('qa.plan'), tone: 'plan' },
+    { href: '/map', icon: Map, label: t('qa.map'), tone: 'map' },
+    { href: '/wallet', icon: Wallet, label: t('qa.wallet'), tone: 'wallet' },
+    { href: '/challenges', icon: Trophy, label: t('qa.challenges'), tone: 'challenges' },
   ];
 
   return (
@@ -94,6 +95,8 @@ export default function HomePage() {
         </Link>
       </div>
 
+      <SustainabilityQuote />
+
       <div className="home-stats grid grid-cols-2 gap-3 md:grid-cols-4">
         {stats.map((s, i) => (
           <div key={i} className="card-soft rise p-4" style={{ animationDelay: `${i * 60}ms` }}>
@@ -108,14 +111,15 @@ export default function HomePage() {
         <SectionTitle>{t('home.quick')}</SectionTitle>
         <div className="home-quick grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
           {qa.map((a) => (
-            <Link key={a.href} href={a.href} className="flex items-center gap-2 p-3 text-start text-xs font-semibold transition-transform hover:-translate-y-0.5 md:text-sm" data-testid={`link-qa-${a.href.slice(1)}`}>
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><a.icon className="h-[18px] w-[18px]" /></span>{a.label}
+            <Link key={a.href} href={a.href} className={`home-action home-action-${a.tone} flex items-center gap-2 p-3 text-start text-xs font-bold transition-transform hover:-translate-y-0.5 md:text-sm`} data-testid={`link-qa-${a.href.slice(1)}`}>
+              <span className="action-icon grid h-9 w-9 shrink-0 place-items-center rounded-xl"><a.icon className="h-[18px] w-[18px]" /></span>
+              <span className="min-w-0 flex-1">{a.label}</span><ArrowRight className="h-4 w-4 shrink-0 opacity-70 rtl:rotate-180" aria-hidden />
             </Link>
           ))}
         </div>
       </section>
 
-      <div className="grid gap-4 lg:grid-cols-5">
+      <div className="home-content-grid grid gap-4 lg:grid-cols-5">
         <section className="card-soft p-5 lg:col-span-2">
           <SectionTitle kicker={`${t('kg')} CO₂`}>{t('home.weekly')}</SectionTitle>
           <div className="h-56" dir="ltr">

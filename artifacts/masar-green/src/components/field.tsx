@@ -14,10 +14,10 @@ export function Field({ label, error, children, hint, id }: { label: string; err
 
 export function Seg<T extends string>({ value, options, onChange, testid }: { value: T; options: { v: T; l: string }[]; onChange: (v: T) => void; testid: string }) {
   return (
-    <div className="flex flex-wrap gap-1.5" role="radiogroup">
+    <div className="segmented-control flex flex-wrap gap-1.5" role="radiogroup">
       {options.map((o) => (
         <button key={o.v} type="button" role="radio" aria-checked={value === o.v} onClick={() => onChange(o.v)} data-testid={`${testid}-${o.v}`}
-          className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${value === o.v ? 'border-foreground bg-foreground text-background' : 'hover:bg-muted'}`}>{o.l}</button>
+          className="segment-option px-3 py-2 text-xs font-bold">{o.l}</button>
       ))}
     </div>
   );
