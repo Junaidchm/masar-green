@@ -206,5 +206,35 @@ not a second dev server on another port.
 7. Connect real partner fulfillment and payments only after explicit setup;
    implement idempotency, reconciliation and refund/error handling.
 
+## AI assistant
+
+- Open **AI assistant** from the app's chat launcher or More menu (`/assistant`).
+  It helps with planning a simulated trip, understanding Green Credits and
+  finding app sections in English or Arabic. Responses stream as they arrive.
+- This is a real AI connection through Replit AI Integrations for OpenAI, using
+  `gpt-5.4-mini`. No personal API key is needed; usage is billed to Replit credits.
+  Provisioning supplies `AI_INTEGRATIONS_OPENAI_BASE_URL` and
+  `AI_INTEGRATIONS_OPENAI_API_KEY` to the server only.
+- The assistant is read-only and unofficial. It has no tools for posting
+  complaints, publishing alerts, inspecting a card or moving funds, and no live
+  transit feed. It does not ingest advertisements, user-authored service alerts,
+  private feedback, sponsorship enquiries, personal trips or wallet records.
+  Check official RTA channels for real journey information.
+- Chat text is sent to the AI provider. Do not send PINs, card numbers, contact
+  details or sensitive information. Basic server-side screening rejects likely
+  card numbers, PINs and email addresses; it is not a complete personal-data
+  detector. The app keeps conversation state in browser memory, not SQLite or
+  browser storage; clearing chat or leaving the page removes it locally.
+  This does not make a claim about the AI provider's retention practices.
+- `POST /api/openai/assistant/messages` accepts up to 20 user/assistant turns,
+  2,000 characters per turn and 16,000 characters total. Its SSE events contain
+  `content`, `done` or `error`. The server times out after 60 seconds and aborts
+  generation when the client disconnects.
+- Prototype cost controls allow 8 requests per IP per 10 minutes, 3 concurrent
+  requests and 120 requests per process per hour. These reset on restart and are
+  not a production billing or distributed abuse-prevention system. Provider
+  failures are shown explicitly; canned fallback replies are never presented
+  as generated answers.
+
 **Concept prototype. Not affiliated with RTA, NOL or any government entity.
 Data is simulated.**

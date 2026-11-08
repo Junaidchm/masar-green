@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { apiText } from './api-text';
 import { engEn, engAr } from './engagement-i18n';
+import { asEn, asAr } from './assistant-i18n';
 
 export type Lang = 'en' | 'ar';
 
@@ -112,6 +113,7 @@ const en = {
   'mode.walk': 'Walk', 'mode.car': 'Car', 'mode.mixed': 'Multimodal',
   offline: 'You are offline. Showing the saved app shell; live data needs a connection.',
   ...engEn,
+  ...asEn,
 };
 
 type Key = keyof typeof en;
@@ -222,6 +224,7 @@ const ar: Partial<Record<Key, string>> = {
   'mode.walk': 'مشي', 'mode.car': 'سيارة', 'mode.mixed': 'متعدد الوسائط',
   offline: 'أنت غير متصل. تُعرض واجهة التطبيق المحفوظة؛ البيانات الحية تحتاج اتصالاً.',
   ...engAr,
+  ...asAr,
 };
 
 export type TKey = Key;

@@ -6,6 +6,27 @@ info:
 servers:
   - url: /api
 paths:
+  /openai/assistant/messages:
+    post:
+      operationId: sendAssistantMessage
+      summary: Stream a Masar Green help reply without retaining chat history
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AssistantInput" }
+      responses:
+        "200":
+          description: SSE events containing content, error or done
+          content:
+            text/event-stream:
+              schema: { type: string }
+        "400":
+          description: Invalid conversation
+        "429":
+          description: Chat request limit reached
+        "503":
+          description: AI service unavailable
   /campaigns:
     get:
       operationId: getCampaigns
@@ -401,6 +422,18 @@ paths:
               schema: { $ref: "#/components/schemas/PersonalData" }
 components:
   schemas:
+    AssistantTurn:
+      type: object
+      required: [role, content]
+      properties:
+        role: { type: string, enum: [user, assistant] }
+        content: { type: string, minLength: 1, maxLength: 2000 }
+    AssistantInput:
+      type: object
+      required: [language, messages]
+      properties:
+        language: { type: string, enum: [en, ar] }
+        messages: { type: array, minItems: 1, maxItems: 20, items: { $ref: "#/components/schemas/AssistantTurn" } }
     CampaignInput:
       type: object
       required: [advertiser, title, description, destinationUrl, placement, startsAt, endsAt, budgetAed]

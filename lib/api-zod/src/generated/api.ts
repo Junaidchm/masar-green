@@ -8,6 +8,26 @@
 import * as zod from 'zod';
 
 
+/**
+ * @summary Stream a Masar Green help reply without retaining chat history
+ */
+export const sendAssistantMessageBodyMessagesItemContentMax = 2000;
+
+export const sendAssistantMessageBodyMessagesMax = 20;
+
+
+
+export const SendAssistantMessageBody = zod.object({
+  "language": zod.enum(['en', 'ar']),
+  "messages": zod.array(zod.object({
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string().min(1).max(sendAssistantMessageBodyMessagesItemContentMax)
+})).min(1).max(sendAssistantMessageBodyMessagesMax)
+})
+
+export const SendAssistantMessageResponse = zod.unknown()
+
+
 export const getCampaignsResponseOneAdvertiserMin = 2;
 export const getCampaignsResponseOneAdvertiserMax = 100;
 

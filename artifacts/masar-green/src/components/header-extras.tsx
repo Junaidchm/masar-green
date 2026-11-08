@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'wouter';
-import { Bell, Megaphone, MessageSquareWarning, MoreHorizontal, BellRing, ArrowRight } from 'lucide-react';
+import { Bell, Megaphone, MessageSquareWarning, MoreHorizontal, BellRing, ArrowRight, Sparkles } from 'lucide-react';
 import { useGetServiceAlerts, getGetServiceAlertsQueryKey } from '@workspace/api-client-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth } from '@/lib/auth';
@@ -55,6 +55,7 @@ export function MoreMenu() {
   const { t } = useI18n();
   const [loc, navigate] = useLocation();
   const items = [
+    { href: '/assistant', label: t('nav.assistant'), icon: Sparkles },
     { href: '/notifications', label: t('nav.notifications'), icon: Bell },
     { href: '/feedback', label: t('nav.feedback'), icon: MessageSquareWarning },
     { href: '/advertise', label: t('nav.advertise'), icon: Megaphone },

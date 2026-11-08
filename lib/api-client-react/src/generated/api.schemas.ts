@@ -5,6 +5,40 @@
  * Masar Green simulated mobility and carbon rewards API
  * OpenAPI spec version: 1.0.0
  */
+export type AssistantTurnRole = typeof AssistantTurnRole[keyof typeof AssistantTurnRole];
+
+
+export const AssistantTurnRole = {
+  user: 'user',
+  assistant: 'assistant',
+} as const;
+
+export interface AssistantTurn {
+  role: AssistantTurnRole;
+  /**
+     * @minLength 1
+     * @maxLength 2000
+     */
+  content: string;
+}
+
+export type AssistantInputLanguage = typeof AssistantInputLanguage[keyof typeof AssistantInputLanguage];
+
+
+export const AssistantInputLanguage = {
+  en: 'en',
+  ar: 'ar',
+} as const;
+
+export interface AssistantInput {
+  language: AssistantInputLanguage;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  messages: AssistantTurn[];
+}
+
 export type CampaignInputPlacement = typeof CampaignInputPlacement[keyof typeof CampaignInputPlacement];
 
 

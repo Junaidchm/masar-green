@@ -7,11 +7,13 @@ import { reportsRouter } from "../masar/reports";
 import { sponsorshipRouter } from "../masar/sponsorship";
 import { alertsRouter } from "../masar/service-alerts";
 import { feedbackRouter } from "../masar/feedback";
+import { assistantRouter } from "./assistant";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
 router.use(authRouter, mobilityRouter, rewardsRouter, reportsRouter);
 router.use(sponsorshipRouter, alertsRouter, feedbackRouter);
+router.use(assistantRouter);
 
 export default router;

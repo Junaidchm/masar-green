@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Home, Route as RouteIcon, Map, Wallet, UserRound, Moon, Sun, Languages, LogIn, LogOut, Trophy, History, Calculator, Building2, Landmark, Eye, WifiOff } from 'lucide-react';
+import { Home, Route as RouteIcon, Map, Wallet, UserRound, Moon, Sun, Languages, LogIn, LogOut, Trophy, History, Calculator, Building2, Landmark, Eye, WifiOff, Sparkles } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth } from '@/lib/auth';
 import { useUpdateProfile, getGetMeQueryKey } from '@workspace/api-client-react';
@@ -141,6 +141,17 @@ export function Shell({ children }: { children: ReactNode }) {
           })}
         </div>
       </nav>
+
+      {!bare && loc !== '/assistant' && (
+        <Link href="/assistant" aria-label={t('as.launcher')} data-testid="link-assistant-launcher"
+          className="group fixed end-4 z-40 inline-flex h-12 items-center gap-2 rounded-full bg-[#111111] ps-1.5 pe-4 text-sm font-bold text-[#F5F6F7] shadow-[0_10px_30px_-10px_rgba(17,17,17,.6)] ring-1 ring-white/10 transition-transform hover:-translate-y-0.5 active:scale-95 bottom-[calc(72px+env(safe-area-inset-bottom))] lg:bottom-6 lg:end-6">
+          <span className="relative grid h-9 w-9 place-items-center rounded-full bg-[#00732F]">
+            <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
+            <span className="absolute -end-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-[#C8102E] ring-2 ring-[#111111]" aria-hidden />
+          </span>
+          <span>{t('as.launcherShort')}</span>
+        </Link>
+      )}
 
       <Dialog open={loginOpen} onOpenChange={(o) => !o && closeLogin()}>
         <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-md">
