@@ -11,4 +11,6 @@ export interface CardLogin {
   cardNumber: string;
   /** @pattern ^\d{4}$ */
   pin: string;
+  /** @pattern ^[A-F0-9]{12}$ */
+  referralCode?: string;
 }

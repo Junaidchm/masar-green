@@ -11,6 +11,7 @@ import { places, transitLines } from "./locations";
 import { plan } from "./planner";
 import { dashboard, tripList, trip, publicUser } from "./data";
 import { carbonConfig, dayGST, round } from "./carbon";
+import { rewardFirstVerifiedReferral } from "./referrals";
 
 export const mobilityRouter=Router();
 sql.exec("CREATE TABLE IF NOT EXISTS trip_checks (user_id INTEGER NOT NULL, fingerprint TEXT NOT NULL, completed_at INTEGER NOT NULL)");
@@ -62,6 +63,7 @@ mobilityRouter.post("/trips/:id/end",authRequired,(req,res)=>{
     run("UPDATE trips SET status=?,ended_at=?,credits=?,verification_score=?,reason=? WHERE id=? AND status='active'",verified?"verified":"pending review",now,credits,score,reasons.join(" ")||null,row.id);
     run("INSERT INTO trip_checks VALUES (?,?,?)",userId,fingerprint,Date.now());
     if(credits>0)earn(userId,credits,`${row.origin} → ${row.destination}`,row.id,now);
+    if(verified)rewardFirstVerifiedReferral(userId,row.id);
   })();
   res.json(EndTripResponse.parse(trip(one("SELECT * FROM trips WHERE id=?",row.id)!)));
 });

@@ -21,6 +21,7 @@ import AdvertisePage from '@/pages/advertise';
 import NotificationsPage from '@/pages/notifications';
 import FeedbackPage from '@/pages/feedback';
 import AssistantPage from '@/pages/assistant';
+import ReferralsPage from '@/pages/referrals';
 import { LoginPage, OnboardingPage, NotFoundPage } from '@/pages/auth-pages';
 
 const queryClient = new QueryClient({
@@ -43,6 +44,7 @@ function PageMetadata() {
       '/notifications': ['al.title', 'al.sub'],
       '/feedback': ['fb.title', 'fb.sub'],
       '/assistant': ['as.title', 'as.sub'],
+      '/referrals': ['rf.title', 'rf.sub'],
     };
     const page = pages[location];
     const title = page ? `${t(page[0])} · Masar Green` : 'Masar Green';
@@ -76,6 +78,7 @@ function Router() {
         <Route path="/notifications" component={NotificationsPage} />
         <Route path="/feedback" component={FeedbackPage} />
         <Route path="/assistant" component={AssistantPage} />
+        <Route path="/referrals" component={ReferralsPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/onboarding" component={OnboardingPage} />
         <Route component={NotFoundPage} />

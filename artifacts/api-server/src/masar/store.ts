@@ -97,8 +97,16 @@ export function insertTrip(userId:number, option:ReturnType<typeof plan>[number]
   const from=places.find(p=>p.id===option.fromId)!, to=places.find(p=>p.id===option.toId)!;
   const credits=status==="verified"?option.credits:0;
   const endedAt=status==="active"?null:new Date(new Date(startedAt).getTime()+option.minutes*60000).toISOString();
-  const result=run(`INSERT INTO trips (user_id,from_id,to_id,origin,destination,mode,status,started_at,ended_at,distance,minutes,co2,saved,credits,verification_score,price,route_id,gst_day)
-  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,userId,option.fromId,option.toId,from.name,to.name,option.legs.find(l=>l.mode!=="walking")?.mode??"walking",status,startedAt,endedAt,option.distance,option.minutes,option.co2,option.saved,credits,score,option.price,option.id,dayGST(new Date(startedAt)));
+  // Privacy deletion retains ledger/audit references. SQLite rowid reuse would
+  // collide with those old rewards, so allocate a persistent monotonic trip ID.
+  const nextId=Number(one(`INSERT INTO app_meta (key,value)
+    VALUES ('trip_sequence',CAST((SELECT MAX(n)+1 FROM (
+      SELECT COALESCE(MAX(id),0) n FROM trips UNION ALL SELECT COALESCE(MAX(trip_id),0) FROM green_ledger
+    )) AS TEXT))
+    ON CONFLICT(key) DO UPDATE SET value=CAST(MAX(CAST(app_meta.value AS INTEGER),CAST(excluded.value AS INTEGER)-1)+1 AS TEXT)
+    RETURNING value`)!.value);
+  const result=run(`INSERT INTO trips (id,user_id,from_id,to_id,origin,destination,mode,status,started_at,ended_at,distance,minutes,co2,saved,credits,verification_score,price,route_id,gst_day)
+  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,nextId,userId,option.fromId,option.toId,from.name,to.name,option.legs.find(l=>l.mode!=="walking")?.mode??"walking",status,startedAt,endedAt,option.distance,option.minutes,option.co2,option.saved,credits,score,option.price,option.id,dayGST(new Date(startedAt)));
   const id=Number(result.lastInsertRowid);
   option.legs.forEach((leg,i)=>run("INSERT INTO trip_legs (trip_id,position,data) VALUES (?,?,?)",id,i,JSON.stringify(leg)));
   if(credits>0) earn(userId,credits,`${from.name} → ${to.name}`,id,endedAt!);

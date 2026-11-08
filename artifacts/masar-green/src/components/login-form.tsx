@@ -3,6 +3,7 @@ import { Nfc, KeyRound, CreditCard, ArrowRight, Loader2, ShieldCheck } from 'luc
 import { useAuth } from '@/lib/auth';
 import { useI18n } from '@/lib/i18n';
 import { toast } from '@/hooks/use-toast';
+import { pendingReferral, clearReferral } from '@/lib/referral-invite';
 
 const DEMOS = [
   { card: '12345678', pin: '1111', key: 'demo.amina', initials: 'AM', tone: '#00732F' },
@@ -43,6 +44,7 @@ export function LoginForm({ compact = false }: { compact?: boolean }) {
   const [pin, setPin] = useState('');
   const [errs, setErrs] = useState<{ card?: string; pin?: string }>({});
   const [nfcMsg, setNfcMsg] = useState<string | null>(null);
+  const [invite, setInvite] = useState(pendingReferral);
 
   const submit = (c = card, p = pin) => {
     const e: typeof errs = {};
@@ -71,6 +73,11 @@ export function LoginForm({ compact = false }: { compact?: boolean }) {
 
   return (
     <div className="space-y-5">
+      {invite && <div className="rounded-xl border border-primary/30 bg-accent p-3 text-sm" data-testid="login-referral-notice">
+        <p className="font-bold">{t('rf.inviteTitle')}</p>
+        <p className="mt-1 text-xs leading-relaxed">{t('rf.inviteBody')}</p>
+        <button type="button" className="mt-2 min-h-11 text-xs font-bold underline underline-offset-4" onClick={()=>{clearReferral();setInvite(undefined);}} data-testid="button-clear-referral">{t('rf.clearInvite')}</button>
+      </div>}
       {!compact && <NolCardGraphic number={card} />}
       <p className="flex items-start gap-2 rounded-lg bg-accent px-3 py-2.5 text-sm text-accent-foreground"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />{t('login.explain')}</p>
       <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); submit(); }}>

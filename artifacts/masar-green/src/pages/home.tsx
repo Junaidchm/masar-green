@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell } from 'recharts';
-import { Route as RouteIcon, Map, Wallet, Trophy, TreePine, Flame, Medal, Leaf, ArrowRight, CreditCard, Bell, HeartHandshake, Sparkles } from 'lucide-react';
+import { Route as RouteIcon, Map, Wallet, Trophy, TreePine, Flame, Medal, Leaf, ArrowRight, CreditCard, Bell, HeartHandshake, Sparkles, UserRoundPlus } from 'lucide-react';
 import { useGetDashboard, getGetDashboardQueryKey } from '@workspace/api-client-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth } from '@/lib/auth';
@@ -59,6 +59,7 @@ export default function HomePage() {
         <Link href="/notifications" data-testid="link-home-notifications"><Bell className="h-4 w-4" />{t('nav.notifications')}</Link>
         <Link href="/feedback" data-testid="link-home-feedback"><HeartHandshake className="h-4 w-4" />{t('nav.feedback')}</Link>
         <Link href="/assistant" data-testid="link-home-assistant"><Sparkles className="h-4 w-4" />{t('as.title')}</Link>
+        <Link href="/referrals" data-testid="link-home-referrals"><UserRoundPlus className="h-4 w-4" />{t('rf.homeCta')}</Link>
       </nav>
 
       <div className="grid gap-4 lg:grid-cols-3">

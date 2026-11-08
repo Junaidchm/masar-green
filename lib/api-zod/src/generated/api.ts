@@ -620,13 +620,33 @@ export const GetMeResponse = zod.object({
 })
 
 
+export const GetReferralsResponse = zod.object({
+  "code": zod.string(),
+  "rewardCredits": zod.number().int(),
+  "joinedCount": zod.number().int(),
+  "pendingCount": zod.number().int(),
+  "rewardedCount": zod.number().int(),
+  "creditsEarned": zod.number().int(),
+  "referrals": zod.array(zod.object({
+  "id": zod.number().int(),
+  "status": zod.enum(['pending', 'rewarded']),
+  "joinedAt": zod.coerce.date(),
+  "rewardedAt": zod.coerce.date().nullable(),
+  "rewardCredits": zod.number().int()
+})),
+  "invitedByReferral": zod.boolean()
+})
+
+
 export const loginBodyCardNumberRegExp = new RegExp('^\\d{8,10}$');
 export const loginBodyPinRegExp = new RegExp('^\\d{4}$');
+export const loginBodyReferralCodeRegExp = new RegExp('^[A-F0-9]{12}$');
 
 
 export const LoginBody = zod.object({
   "cardNumber": zod.string().regex(loginBodyCardNumberRegExp),
-  "pin": zod.string().regex(loginBodyPinRegExp)
+  "pin": zod.string().regex(loginBodyPinRegExp),
+  "referralCode": zod.string().regex(loginBodyReferralCodeRegExp).optional()
 })
 
 export const LoginResponse = zod.object({

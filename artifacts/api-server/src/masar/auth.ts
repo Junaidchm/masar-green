@@ -7,6 +7,7 @@ import { LoginBody, LoginResponse, GetMeResponse, UpdateProfileBody, UpdateProfi
 import { one, run, sql } from "./store";
 import { publicUser } from "./data";
 import { ensureFeedbackWorkspace } from "./feedback-workspace";
+import { attachReferral, referralOwner } from "./referrals";
 
 const secret=process.env.SESSION_SECRET;
 if(!secret)throw new Error("SESSION_SECRET is required. Configure it in Replit Secrets.");
@@ -37,8 +38,8 @@ authRouter.get("/auth/me",(req,res)=>{
 });
 authRouter.post("/auth/login",loginLimiter,async(req,res)=>{
   const input=LoginBody.safeParse(req.body);
-  if(!input.success){res.status(400).json({error:"Enter an 8–10 digit card number and a 4-digit PIN."});return;}
-  const {cardNumber,pin}=input.data;
+  if(!input.success){res.status(400).json({error:req.body?.referralCode!==undefined?"rf.invalid":"Enter an 8–10 digit card number and a 4-digit PIN."});return;}
+  const {cardNumber,pin,referralCode}=input.data;
   const key=createHash("sha256").update(cardNumber).digest("hex");
   const attempts=one("SELECT * FROM login_attempts WHERE key=?",key);
   if(attempts&&attempts.until_ms>Date.now()&&attempts.attempts>=8){res.status(429).json({error:"This demo card is temporarily locked. Try again in 15 minutes."});return;}
@@ -48,14 +49,20 @@ authRouter.post("/auth/login",loginLimiter,async(req,res)=>{
     run("INSERT INTO login_attempts (key,attempts,until_ms) VALUES (?,?,?) ON CONFLICT(key) DO UPDATE SET attempts=excluded.attempts,until_ms=excluded.until_ms",key,count,Date.now()+15*60000);
     res.status(401).json({error:"The card number or PIN is incorrect."});return;
   }
+  if(referralCode && card){res.status(409).json({error:"rf.existing"});return;}
+  if(referralCode) referralOwner(referralCode);
   if(!card){
     const pinHash=await bcrypt.hash(pin,10);
     // This only creates a prototype card. No real-world NOL card is verified.
     sql.transaction(()=>{
       card=one("SELECT * FROM cards WHERE number=?",cardNumber);
-      if(card)return;
+      if(card) {
+        if(referralCode) throw Object.assign(new Error("rf.existing"),{status:409});
+        return;
+      }
       const id=Number(run("INSERT INTO users (name) VALUES ('New commuter')").lastInsertRowid);
       run("INSERT INTO cards (user_id,number,pin_hash,balance) VALUES (?,?,?,25)",id,cardNumber,pinHash);
+      if(referralCode) attachReferral(id,referralCode);
       card=one("SELECT * FROM cards WHERE user_id=?",id);
     })();
     if(!await bcrypt.compare(pin,card!.pin_hash)){res.status(401).json({error:"The card number or PIN is incorrect."});return;}

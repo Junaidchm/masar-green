@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { apiText } from './api-text';
 import { engEn, engAr } from './engagement-i18n';
 import { asEn, asAr } from './assistant-i18n';
+import { rfEn, rfAr } from './referral-i18n';
 
 export type Lang = 'en' | 'ar';
 
@@ -123,6 +124,7 @@ const en = {
   offline: 'You are offline. Showing the saved app shell; live data needs a connection.',
   ...engEn,
   ...asEn,
+  ...rfEn,
 };
 
 type Key = keyof typeof en;
@@ -243,6 +245,7 @@ const ar: Partial<Record<Key, string>> = {
   offline: 'أنت غير متصل. تُعرض واجهة التطبيق المحفوظة؛ البيانات الحية تحتاج اتصالاً.',
   ...engAr,
   ...asAr,
+  ...rfAr,
 };
 
 export type TKey = Key;

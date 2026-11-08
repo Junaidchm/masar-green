@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'wouter';
-import { Bell, Megaphone, MessageSquareWarning, MoreHorizontal, BellRing, ArrowRight, Sparkles, Trophy, History, Calculator, Building2, Landmark } from 'lucide-react';
+import { Bell, Megaphone, MessageSquareWarning, MoreHorizontal, BellRing, ArrowRight, Sparkles, Trophy, History, Calculator, Building2, Landmark, UserRoundPlus } from 'lucide-react';
 import { useGetServiceAlerts, getGetServiceAlertsQueryKey } from '@workspace/api-client-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth } from '@/lib/auth';
@@ -61,6 +61,7 @@ export function MoreMenu() {
     { href: '/feedback', label: t('nav.feedback'), icon: MessageSquareWarning },
     { href: '/advertise', label: t('nav.advertise'), icon: Megaphone },
     { href: '/challenges', label: t('nav.challenges'), icon: Trophy },
+    { href: '/referrals', label: t('nav.referrals'), icon: UserRoundPlus },
     { href: '/trips', label: t('nav.trips'), icon: History },
     { href: '/carbon', label: t('nav.carbon'), icon: Calculator },
     ...(user?.role === 'employer' ? [{ href: '/employer', label: t('nav.employer'), icon: Building2 }] : []),

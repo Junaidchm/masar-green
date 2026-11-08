@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import { getGetMeQueryKey, useGetMe, useLogin, useLogout, type User, type Session } from '@workspace/api-client-react';
 import { useI18n } from './i18n';
 import { toast } from '@/hooks/use-toast';
+import { pendingReferral, clearReferral } from './referral-invite';
 
 export function errStatus(e: unknown): number | undefined {
   return (e as { status?: number } | null)?.status;
@@ -55,7 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(async (cardNumber: string, pin: string) => {
     try {
-      const s = await loginRef.current({ data: { cardNumber, pin } });
+      const referralCode = pendingReferral();
+      const s = await loginRef.current({ data: { cardNumber, pin, ...(referralCode ? {referralCode} : {}) } });
+      if (referralCode) clearReferral();
       // Private complaint/enquiry caches must never flash from a previous account.
       await qc.cancelQueries({ predicate: (q) => q.queryKey[0] !== getGetMeQueryKey()[0] });
       qc.removeQueries({ predicate: (q) => q.queryKey[0] !== getGetMeQueryKey()[0] });

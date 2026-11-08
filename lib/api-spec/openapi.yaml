@@ -212,6 +212,19 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Session" }
+  /referrals:
+    get:
+      operationId: getReferrals
+      responses:
+        "200":
+          description: Current commuter's private referral summary
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ReferralSummary" }
+        "401":
+          description: Sign in required
+        "403":
+          description: Commuter accounts only
   /auth/login:
     post:
       operationId: login
@@ -573,6 +586,28 @@ components:
       properties:
         cardNumber: { type: string, pattern: '^\d{8,10}$' }
         pin: { type: string, pattern: '^\d{4}$' }
+        referralCode: { type: string, pattern: '^[A-F0-9]{12}$' }
+    ReferralEntry:
+      type: object
+      required: [id, status, joinedAt, rewardedAt, rewardCredits]
+      properties:
+        id: { type: integer }
+        status: { type: string, enum: [pending, rewarded] }
+        joinedAt: { type: string, format: date-time }
+        rewardedAt: { type: [string, "null"], format: date-time }
+        rewardCredits: { type: integer }
+    ReferralSummary:
+      type: object
+      required: [code, rewardCredits, joinedCount, pendingCount, rewardedCount, creditsEarned, referrals, invitedByReferral]
+      properties:
+        code: { type: string }
+        rewardCredits: { type: integer }
+        joinedCount: { type: integer }
+        pendingCount: { type: integer }
+        rewardedCount: { type: integer }
+        creditsEarned: { type: integer }
+        referrals: { type: array, items: { $ref: "#/components/schemas/ReferralEntry" } }
+        invitedByReferral: { type: boolean }
     ProfileInput:
       type: object
       properties:

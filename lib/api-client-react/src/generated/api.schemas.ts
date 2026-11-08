@@ -341,6 +341,36 @@ export interface CardLogin {
   cardNumber: string;
   /** @pattern ^\d{4}$ */
   pin: string;
+  /** @pattern ^[A-F0-9]{12}$ */
+  referralCode?: string;
+}
+
+export type ReferralEntryStatus = typeof ReferralEntryStatus[keyof typeof ReferralEntryStatus];
+
+
+export const ReferralEntryStatus = {
+  pending: 'pending',
+  rewarded: 'rewarded',
+} as const;
+
+export interface ReferralEntry {
+  id: number;
+  status: ReferralEntryStatus;
+  joinedAt: string;
+  /** @nullable */
+  rewardedAt: string | null;
+  rewardCredits: number;
+}
+
+export interface ReferralSummary {
+  code: string;
+  rewardCredits: number;
+  joinedCount: number;
+  pendingCount: number;
+  rewardedCount: number;
+  creditsEarned: number;
+  referrals: ReferralEntry[];
+  invitedByReferral: boolean;
 }
 
 export type ProfileInputLanguage = typeof ProfileInputLanguage[keyof typeof ProfileInputLanguage];
