@@ -50,6 +50,18 @@ Thumbs.db
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Replit agent workspace and local-only notes
+.agents/
+replit.md
+
+# Local uploads and raw working screenshots
+attached_assets/
+
 # Replit
 .cache/
 .local/
