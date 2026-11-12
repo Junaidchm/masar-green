@@ -10,7 +10,7 @@ import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "attached_assets/generated_images/masar-green-overview.gif"
+OUTPUT = ROOT / "docs/assets/masar-green-overview.gif"
 WIDTH, HEIGHT = 960, 540
 BG, INK, GREEN, LIME = "#F5F3EC", "#183B35", "#1B6654", "#D6ED74"
 MUTED, BORDER, PALE, GOLD = "#64736D", "#DCE0D6", "#E8EFE6", "#F0E9D7"
