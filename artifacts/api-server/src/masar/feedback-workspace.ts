@@ -19,7 +19,7 @@ export function ensureFeedbackWorkspace(req: Request, res: Response): string {
   if (existing) return existing;
   const token = randomBytes(32).toString("hex"), digest = hash(token);
   run("INSERT INTO feedback_workspaces VALUES (?,?)", digest, Date.now() + 7 * 86400000);
-  res.cookie(cookieName, token, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 7 * 86400000 });
+  res.cookie(cookieName, token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 7 * 86400000 });
   return digest;
 }
 export const feedbackWorkspace: RequestHandler = (req, res, next) => {

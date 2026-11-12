@@ -75,7 +75,9 @@ authRouter.post("/auth/login",loginLimiter,async(req,res)=>{
   const jti=randomUUID(),expires=Date.now()+7*86400000;
   run("INSERT INTO sessions VALUES (?,?,?)",jti,card!.user_id,expires);
   const token=jwt.sign({},signingSecret,{algorithm:"HS256",subject:String(card!.user_id),jwtid:jti,issuer:"masar-green",expiresIn:"7d"});
-  res.cookie(cookieName,token,{httpOnly:true,secure:true,sameSite:"lax",maxAge:7*86400000,path:"/"});
+  // Secure cookies are mandatory in production. Development over plain HTTP
+  // (localhost) needs a non-Secure cookie; Replit development is still HTTPS.
+  res.cookie(cookieName,token,{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"lax",maxAge:7*86400000,path:"/"});
   ensureFeedbackWorkspace(req,res);
   const user=publicUser(card!.user_id);
   res.json(LoginResponse.parse({user,needsOnboarding:!user.onboarded}));
@@ -85,7 +87,7 @@ authRouter.post("/auth/logout",(req,res)=>{
     const decoded=jwt.verify(req.cookies?.[cookieName],signingSecret) as jwt.JwtPayload;
     run("DELETE FROM sessions WHERE id=?",decoded.jti);
   }catch{}
-  res.clearCookie(cookieName,{httpOnly:true,secure:true,sameSite:"lax",path:"/"});
+  res.clearCookie(cookieName,{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"lax",path:"/"});
   res.json({message:"Signed out."});
 });
 authRouter.patch("/profile",authRequired,(req,res)=>{
